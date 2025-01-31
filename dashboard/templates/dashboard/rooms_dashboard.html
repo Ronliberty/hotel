@@ -1,0 +1,35 @@
+{% extends 'dashboard/best.html' %}
+
+
+{% load static %}
+   {% block styles %}
+
+<style>
+.room-service-dashboard {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.dashboard-message {
+    font-size: 16px;
+    color: #666;
+}
+
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="room-service-dashboard">
+    <h1 class="dashboard-title">Welcome to Your Room Service Dashboard</h1>
+    <p class="dashboard-message">You're doing great! Below are the current room service tasks awaiting your attention. Stay on top of things and provide excellent service!</p>
+</div>
+
+{% endblock %}

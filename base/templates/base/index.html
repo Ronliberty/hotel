@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StarLight Hotel</title>
+
+  <link rel="stylesheet" href="{% static 'base/css/styles.css' %}">
+  <!-- Add jQuery for the loading icon functionality -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    /* Include the jQuery loading spinner styles */
+    .loader {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Loading spinner -->
+  <div class="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <nav class="navbar">
+    <h1 class="navname">StarLight Hotel</h1>
+    <div class="navlinks">
+
+    </div>
+  </nav>
+
+  <section class="hero_sect">
+    <div class="hero">
+     <h2 style="font-size: 2.5rem; color: #4CAF50; text-align: center; margin-bottom: 10px;">
+  Welcome to <span style="color: #FF9800;">StarLight</span> Hotel
+</h2>
+<p style="font-size: 1.2rem; color: #333333; text-align: center; margin-bottom: 20px;">
+  Your luxury work experience starts here.
+</p>
+<a href="{% url 'login' %}" class="btn" style="display: inline-block; padding: 12px 25px; font-size: 1.1rem; color: #fff; background-color: #FF5722; border-radius: 5px; text-align: center; text-decoration: none;">
+  Get Started
+</a>
+
+    </div>
+  </section>
+
+<script>
+  $(window).on('load', function() {
+    // Hide the loader when the page has fully loaded
+    $(".loader").fadeOut();
+  });
+
+  // Display loading spinner when navigating
+  $(document).on('click', 'a', function() {
+    $(".loader").fadeIn();
+  });
+
+  // Set a time limit for the loader (e.g., 5 seconds)
+  setTimeout(function() {
+    $(".loader").fadeOut();
+  }, 5000);  // 5000 milliseconds = 5 seconds
+
+  $(document).ready(function () {
+    // Apply text-decoration: none to all anchor tags
+    $("a").css("text-decoration", "none");
+  });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+{% load static %}
+   {% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'cart/css/custom.css' %}">
+{% endblock %}
+    <style>
+        /* Additional custom styles for a more modern look */
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+        }
+        .form-group label {
+            font-weight: 600;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        h2 {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+        .form-control {
+            border-radius: .375rem;
+        }
+    </style>
+</head>
+<body>
+   <!-- main_category_form.html -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Create Main Category</h2>
+    <form method="post" id="main-category-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Name</label>
+            {{ form.name }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.description.id_for_label }}">Description</label>
+            {{ form.description }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Create</button>
+    </form>
+</div>
+
+<!-- jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+
+<!--<script>-->
+<!--    // jQuery AJAX form submission-->
+<!--    $('#main-category-form').on('submit', function(e) {-->
+<!--        e.preventDefault();  // Prevent the default form submission-->
+
+<!--        var formData = $(this).serialize();  // Serialize form data-->
+
+<!--        $.ajax({-->
+<!--            url: $(this).attr('action'),  // The URL to submit the form to-->
+<!--            method: 'POST',-->
+<!--            data: formData,-->
+<!--            success: function(response) {-->
+<!--                // Handle success (e.g., show a success message and redirect)-->
+<!--                alert(response.message);-->
+<!--                window.location.href = response.success_url;-->
+<!--            },-->
+<!--            error: function(xhr) {-->
+<!--                // Handle error (e.g., show validation errors)-->
+<!--                var errors = xhr.responseJSON.errors;-->
+<!--                alert(errors);-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+{% endblock %}

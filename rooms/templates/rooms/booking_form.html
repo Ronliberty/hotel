@@ -1,0 +1,171 @@
+{% extends 'dashboard/best.html' %}
+{% block content %}
+{% block styles %}
+<style>
+/* Form Container */
+#booking-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background: #fff;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    outline: none;
+}
+
+/* Error Styling */
+.form-error {
+    color: #d9534f;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Submit Button */
+.custom-submit-btn {
+    display: inline-block;
+    background-color: #4caf50;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.custom-submit-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.custom-submit-btn:active {
+    background-color: #3e8e41;
+    transform: translateY(0);
+}
+
+/* Back Link */
+.bac-btn {
+    display: inline-block;
+    background-color: #6c757d; /* Gray background */
+    color: #fff; /* White text */
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.bac-btn:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px); /* Lift effect */
+}
+
+.bac-btn:active {
+    background-color: #495057; /* Even darker gray on click */
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.2);
+    transform: translateY(0); /* Reset lift effect */
+}
+</style>
+
+{% endblock %}
+
+<h1>{{ view.object|default:"Add Booking" }}</h1>
+
+<form method="post" id="booking-form">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="id_room">{{ form.room.label }}</label>
+        {{ form.room }}
+        {% if form.room.errors %}
+        <p class="form-error">{{ form.room.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_customer_name">{{ form.customer_name.label }}</label>
+        {{ form.customer_name }}
+        {% if form.customer_name.errors %}
+        <p class="form-error">{{ form.customer_name.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_customer_phone">{{ form.customer_phone.label }}</label>
+        {{ form.customer_phone }}
+        {% if form.customer_phone.errors %}
+        <p class="form-error">{{ form.customer_phone.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_check_in_date">{{ form.check_in_date.label }}</label>
+        {{ form.check_in_date }}
+        {% if form.check_in_date.errors %}
+        <p class="form-error">{{ form.check_in_date.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_check_out_date">{{ form.check_out_date.label }}</label>
+        {{ form.check_out_date }}
+        {% if form.check_out_date.errors %}
+        <p class="form-error">{{ form.check_out_date.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_guests">{{ form.guests.label }}</label>
+        {{ form.guests }}
+        {% if form.guests.errors %}
+        <p class="form-error">{{ form.guests.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="custom-submit-btn">Save</button>
+</form>
+
+<a href="{% url 'rooms:booking-list' %}" class="bac-link">Back to List</a>
+{% endblock %}

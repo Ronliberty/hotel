@@ -1,0 +1,26 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+{% load static %}
+   {% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% endblock %}
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Menu Item Products</h1>
+        <ul class="list-group mb-4">
+            {% for menu_item_product in menu_item_products %}
+                <li class="list-group-item">
+                    <a href="{% url 'cart:menu_item_product_detail' menu_item_product.pk %}" class="text-decoration-none">
+                        {{ menu_item_product.quantity }} {{ menu_item_product.product.unit }} of {{ menu_item_product.product.name }}
+                        for {{ menu_item_product.menu_item.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="text-center">
+
+        </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

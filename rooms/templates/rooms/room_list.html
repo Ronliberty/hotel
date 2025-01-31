@@ -1,0 +1,12 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+<h1>Room List</h1>
+<a href="{% url 'rooms:room-add' %}">Add Room</a>
+<ul>
+    {% for room in rooms %}
+        <li>
+            <a href="{% url 'rooms:room-detail' room.pk %}">{{ room }}</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

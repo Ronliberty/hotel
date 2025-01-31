@@ -1,0 +1,23 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+{% load static %}
+   {% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% endblock %}
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">{{ view.object.menu_item.name|default:"Add New Product to Menu Item" }}</h1>
+        <div class="card p-4">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100 mt-3">Save</button>
+            </form>
+        </div>
+        <div class="text-center mt-3">
+            <a href="{% url 'cart:menu_item_product_list' %}" class="btn btn-link">Cancel</a>
+        </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

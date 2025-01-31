@@ -1,0 +1,30 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+<h1>Check Availability for {{ room }}</h1>
+<form method="post" id="availability-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Check Availability</button>
+</form>
+<div id="availability-result"></div>
+<script>
+    const form = document.getElementById('availability-form');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const response = await fetch("", {
+            method: 'POST',
+            body: formData,
+        });
+        const result = await response.json();
+        const resultDiv = document.getElementById('availability-result');
+        if (result.available) {
+            resultDiv.innerHTML = "Room is available!";
+        } else {
+            resultDiv.innerHTML = "Room is not available.";
+        }
+    });
+</script>
+<a href="{% url 'rooms:rooms-list' %}">Back to List</a>
+
+{% endblock %}

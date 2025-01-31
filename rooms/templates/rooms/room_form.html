@@ -1,0 +1,11 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+<h1>{{ view.object|default:"Add Room" }}</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+<a href="{% url 'rooms:rooms-list' %}">Back to List</a>
+
+{% endblock %}

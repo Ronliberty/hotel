@@ -1,0 +1,30 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+{% load static %}
+   {% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% endblock %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="card-title">Delete Subcategory</h4>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Are you sure you want to delete this subcategory?</p>
+                    <p><strong>{{ subcategory.name }}</strong></p>
+                    <p><strong>Category:</strong> {{ subcategory.category.name }}</p>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <a href="{% url 'inventory:sub_list' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

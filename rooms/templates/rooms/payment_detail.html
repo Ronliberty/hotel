@@ -1,0 +1,141 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+{% load static %}
+{% block styles %}
+<style>
+
+/* General styles for the container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* Heading styles */
+h2.text-primary {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+/* Card styles */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Table styles */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-collapse: collapse;
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #dee2e6;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.table-bordered th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+    color: #333;
+}
+
+.table-bordered td {
+    background-color: #fff;
+    color: #555;
+}
+
+/* Button styles */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    background-color: #17a2b8;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+}
+
+/* Responsive design */
+@media (max-width: 576px) {
+    h2.text-primary {
+        font-size: 1.5rem;
+    }
+
+    .table-bordered th,
+    .table-bordered td {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+}
+
+
+</style>
+{% endblock %}
+<div class="container my-5">
+    <h2 class="mb-4 text-center text-primary">Payment Details</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Booking ID</th>
+                    <td>{{ payment.booking.id }}</td>
+                </tr>
+                <tr>
+                    <th>Amount</th>
+                    <td><strong>Ksh {{ payment.amount }}</strong></td>
+                </tr>
+                <tr>
+                    <th>Payment Date</th>
+                    <td>{{ payment.payment_date }}</td>
+                </tr>
+                <tr>
+                    <th>Payment Method</th>
+                    <td>{{ payment.get_payment_method_display }}</td>
+                </tr>
+                <tr>
+                    <th>Is Paid?</th>
+                    <td>{{ payment.is_paid|yesno:"Yes,No" }}</td>
+                </tr>
+            </table>
+            <a href="{% url 'rooms:paid_payments_list' %}" class="btn btn-info btn-sm">Back to Paid Payments</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

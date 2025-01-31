@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .receipt {
+            width: 280px; /* Standard receipt width */
+            margin: auto;
+            padding: 15px;
+            border: 1px dashed black;
+            background: #fff;
+            text-align: left;
+        }
+        .receipt h2 {
+            text-align: center;
+            margin: 5px 0;
+        }
+        .receipt p, .receipt table {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .receipt table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .receipt th, .receipt td {
+            text-align: left;
+            padding: 3px 0;
+        }
+        .receipt .total {
+            border-top: 1px dashed black;
+            margin-top: 5px;
+            padding-top: 5px;
+            font-weight: bold;
+        }
+        .receipt .balance {
+            font-size: 16px;
+            font-weight: bold;
+            color: {% if payment.balance < 0 %}red{% else %}black{% endif %}; /* Highlight overpayments in red */
+        }
+        .print-btn {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            background: black;
+            color: white;
+            border: none;
+        }
+        @media print {
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="receipt">
+    <h2>StarLight Hotel</h2>
+    <p>Mombasa</p>
+    <p>Phone: +254 712 34*****</p>
+    <p>Date: {{ payment.payment_dt }}</p>
+    <p>Cashier: {{ payment.served_by }}</p>
+
+    <hr>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.menu_item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.total_price }} Ksh</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p class="total">Subtotal: {{ payment.sub_total }} Ksh</p>
+    <p class="total">Tax: {{ payment.tax_total }} Ksh</p>
+    <p class="total">Total: {{ payment.total_payment }} Ksh</p>
+    <p class="total">Amount Paid: {{ payment.amount_paid }} Ksh</p>
+    <p class="total balance">Balance: {{ payment.balance }} Ksh</p> <!-- Balance field added -->
+
+    <p><strong>Payment Method:</strong> {{ payment.payment_type }}</p>
+
+    <hr>
+
+    <p style="text-align: center;">Thank you for shopping with us!</p>
+
+    <button class="print-btn" onclick="window.print()">Print Receipt</button>
+</div>
+
+</body>
+</html>

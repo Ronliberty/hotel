@@ -1,0 +1,23 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+{% load static %}
+   {% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% endblock %}
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Details for Menu Item Product</h1>
+        <div class="card p-4">
+            <p><strong>Quantity:</strong> {{ menu_item_product.quantity }} {{ menu_item_product.product.unit }}</p>
+            <p><strong>Product Name:</strong> {{ menu_item_product.product.name }}</p>
+            <p><strong>Used for:</strong> {{ menu_item_product.menu_item.name }}</p>
+            <div class="btn-group mt-4" role="group">
+                <a href="{% url 'cart:menu_item_product_edit' menu_item_product.pk %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'cart:menu_item_product_delete' menu_item_product.pk %}" class="btn btn-danger">Delete</a>
+                <a href="{% url 'cart:menu_item_product_list' %}" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends 'dashboard/best.html' %}
+{% load static %}
+{% block styles %}
+<style>
+/* Scoped Styles for #best-template */
+#best-template a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+#best-template a:hover {
+    color: #0056b3;
+}
+
+/* Buttons */
+#best-template button.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#best-template button.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+#best-template button.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* List styles */
+#best-template ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#best-template ul li {
+    padding: 15px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+#best-template ul li:hover {
+    transform: translateY(-2px);
+}
+
+/* List text styling */
+#best-template ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+#best-template ul li p {
+    color: #555;
+    margin: 5px 0;
+}
+
+/* Section Titles */
+#best-template h2 {
+    cursor: pointer;
+    background-color: #343a40;
+    color: #fff;
+    padding: 15px;
+    margin-top: 20px;
+    margin-bottom: 0;
+    border-radius: 5px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.3s ease;
+}
+
+#best-template h2:hover {
+    background-color: #495057;
+}
+
+/* Add an arrow icon to indicate toggle */
+#best-template h2::after {
+    content: "▼"; /* Down arrow */
+    font-size: 16px;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+#best-template h2.active::after {
+    transform: rotate(180deg); /* Flip the arrow when active */
+}
+
+/* Toggle Sections */
+#best-template .toggle-content {
+    display: none; /* Default state hidden */
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    background-color: #fff;
+}
+#best-template .book-now-btn {
+    display: inline-block;
+    background-color: #28a745; /* Green color */
+    color: #fff; /* White text */
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+#best-template .book-now-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+#best-template .book-now-btn:active {
+    background-color: #1e7e34; /* Even darker green on click */
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.2);
+    transform: translateY(0); /* Reset lift effect */
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+    <!-- Load jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Your custom script -->
+    <script>
+        $(document).ready(function () {
+            // Scoped script for #best-template
+            $('#best-template h2').on('click', function () {
+                $(this).toggleClass('active');
+                $(this).next('.toggle-content').slideToggle(300);
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<div id="best-template">
+<a href="{% url 'rooms:booking-add' %}" class="book-now-btn">Book Now</a>
+
+
+    <h2>Pending Bookings</h2>
+    <div class="toggle-content">
+        {% if pending_bookings %}
+            <ul>
+                {% for booking in pending_bookings %}
+                    <li>
+                        <a href="{% url 'rooms:booking-detail' booking.id %}">{{ booking.customer_name }} - {{ booking.room.room_number }}
+                        <p>Booking Date: {{ booking.booking_date }}</p>
+                        <p>Status: {{ booking.get_status_display }}</p>
+                            </a>
+                        <form action="{% url 'rooms:cancel-booking' booking.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Cancel</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No pending bookings.</p>
+        {% endif %}
+    </div>
+
+    <h2>Confirmed Bookings</h2>
+    <div class="toggle-content">
+        {% if confirmed_bookings %}
+            <ul>
+                {% for booking in confirmed_bookings %}
+                    <li>
+                        <a href="{% url 'rooms:booking-detail' booking.id %}">{{ booking.customer_name }} - {{ booking.room.room_number }}
+                        <p>Booking Date: {{ booking.booking_date }}</p>
+                        <p>Status: {{ booking.get_status_display }}</p>
+                            </a>
+                    </li>
+
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No confirmed bookings.</p>
+        {% endif %}
+    </div>
+
+    <h2>Cancelled Bookings</h2>
+    <div class="toggle-content">
+        {% if cancelled_bookings %}
+            <ul>
+                {% for booking in cancelled_bookings %}
+                    <li>
+                        <a href="{% url 'rooms:booking-detail' booking.id %}">{{ booking.customer_name }} - {{ booking.room.room_number }}
+                        <p>Booking Date: {{ booking.booking_date }}</p>
+                        <p>Status: {{ booking.get_status_display }}</p>
+                            </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No cancelled bookings.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}

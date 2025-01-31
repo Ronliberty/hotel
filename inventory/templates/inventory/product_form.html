@@ -1,0 +1,39 @@
+{% extends 'dashboard/main.html' %}
+{% block content %}
+{% load static %}
+   {% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% endblock %}
+
+
+    <div class="">
+        <div class="">
+            <div class="">
+                Create Product
+            </div>
+            <form id="product-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="">
+                    {% for field in form %}
+                    <div class="">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <small class="">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                        <div class="">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="">Submit</button>
+                    <a href="{% url 'inventory:product_list' %}" class="btn-sub">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

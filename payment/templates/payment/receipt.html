@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .receipt-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .receipt-details {
+            margin-bottom: 20px;
+        }
+        .receipt-details p {
+            margin: 5px 0;
+        }
+        .receipt-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="receipt-header">
+            <h2>Payment Receipt</h2>
+            <p><strong>Date:</strong> {{ date }}</p>
+        </div>
+        <div class="receipt-details">
+            <p><strong>Order ID:</strong> {{ order.id }}</p>
+            <p><strong>Payment ID:</strong> {{ payment.payment_id }}</p>
+            <p><strong>User:</strong> {{ user.get_full_name }}</p>
+            <p><strong>Amount Paid:</strong> {{ payment_order.amount_paid }} Ksh</p>
+            <p><strong>Tax Applied:</strong> {{ payment_order.tax_applied }} Ksh</p>
+            <p><strong>Total Payment:</strong> {{ payment.total_payment }} Ksh</p>
+            <p><strong>Payment Type:</strong> {{ payment.payment_type }}</p>
+        </div>
+        <div class="receipt-footer">
+            <p>Thank you for your payment!</p>
+        </div>
+    </div>
+</body>
+</html>

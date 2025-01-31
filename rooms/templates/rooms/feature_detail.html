@@ -1,0 +1,9 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+<h1>{{ feature.name }}</h1>
+<p>{{ feature.description }}</p>
+<a href="{% url 'rooms:feature-edit' feature.pk %}">Edit</a>
+<a href="{% url 'rooms:feature-delete' feature.pk %}">Delete</a>
+<a href="{% url 'rooms:feature-list' %}">Back to List</a>
+
+{% endblock %}

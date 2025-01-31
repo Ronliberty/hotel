@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="">
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	{% block styles %}{% endblock %}
+
+	<title>{% block title %}store{% endblock %}</title>
+
+</head>
+<body>
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		{% if user.is_superuser %}
+		<a href="{% url 'dashboard:super_dashboard' %}" class="brand"><i class='bx bxs-smile icon'></i>Overview</a>
+		{% else %}
+
+		<a href="{% url 'dashboard:manager_dashboard' %}" class="brand"><i class='bx bxs-smile icon'></i>Admin</a>
+		{% endif %}
+		<ul class="side-menu">
+			<li><a href="{% url 'dashboard:manager_dashboard' %}" class="active"><i class='bx bxs-dashboard icon' ></i> Dashboard</a></li>
+			<li class="divider" data-text="main">Main</li>
+			<li>
+				<a href="#"><i class='bx bxs-inbox icon' ></i> Products <i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+
+					<li class="ajax-link"><a href="{% url 'inventory:list_products' %}" data-url="{% url 'inventory:product_list' %}">Product List</a></li>
+
+
+				</ul>
+			</li>
+			<li>
+				<a href="#"><i class='bx bxs-inbox icon' ></i> Categories <i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li class="ajax-link"><a href="{% url 'inventory:main_category_add' %}" data-url="{% url 'inventory:main_category_add' %}">Add MainCategory</a></li>
+					<li class="ajax-link"><a href="{% url 'inventory:main_category_list' %}" data-url="{% url 'inventory:main_category_list' %}">MainCategory List</a></li>
+					<li class="ajax-link"><a href="{% url 'inventory:sub_add' %}" data-url="{% url 'inventory:sub_add' %}">Add SubCategory</a></li>
+					<li class="ajax-link"><a href="{% url 'inventory:sub_list' %}" data-url="{% url 'inventory:sub_list' %}">SubCategory List</a></li>
+				</ul>
+			</li>
+
+
+
+			<li>
+				<a href="#"><i class='bx bxs-notepad icon' ></i> MenuCategories <i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li><a href="{% url 'cart:menu_category_create' %}">Add MenuCategory</a></li>
+					<li><a href="{% url 'cart:menu_category_list' %}">MenuCategory list</a></li>
+
+
+
+				</ul>
+				</li>
+
+
+
+			<li>
+
+				<a href="#"><i class='bx bxs-notepad icon' ></i> Menu <i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li><a href="{% url 'cart:menuitem-create' %}">AddMenu</a></li>
+					<li><a href="{% url 'cart:list_menu' %}">MenuList</a></li>
+				</ul>
+
+			</li>
+			<li>
+				<a href="#"><i class='bx bxs-notepad icon' ></i> MenuProducts <i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li><a href="{% url 'cart:menu_item_product_list' %}">Menu Product list</a></li>
+
+
+				</ul>
+
+
+				<li>
+				<a href="#"><i class='bx bxs-notepad icon' ></i> Rooms <i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li><a href="{% url 'rooms:room-add' %}">Rooms Add</a></li>
+					<li><a href="{% url 'rooms:rooms-list' %}">Rooms list</a></li>
+					<li><a href="{% url 'rooms:feature-add' %}">Features Add</a></li>
+					<li><a href="{% url 'rooms:feature-list' %}">Features List</a></li>
+					<li><a href="{% url 'rooms:paid_payments_list' %}">Paid List</a></li>
+
+					<li><a href="{% url 'rooms:payment_summary' %}">Payment Summary</a></li>
+
+				</ul>
+
+				<li>
+			<li>
+				<a href="#"><i class='bx bxs-notepad icon' >Transaction</i>  <i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li class="ajax-link"><a href="{% url 'cart:completed-orders' %}" data-url="{% url 'cart:completed-orders' %}">All Transactions</a></li>
+					<li class="ajax-link"><a href="{% url 'cart:deleted_orders' %}" data-url="{% url 'cart:deleted_orders' %}">Deleted Transactions </a></li>
+
+
+					<li><a href=""> Recent Transaction</a></li>
+
+
+				</ul>
+			</li>
+		</ul>
+		<div class="ads">
+		{% if user.is_superuser %}
+        <a href="{% url 'dashboard:super_dashboard' %}" class="btn-upgrade">Home</a>
+    {% else %}
+        <a href="{% url 'logout' %}" class="btn-upgrade">Logout</a>
+    {% endif %}
+		</div>
+	</section>
+	<!-- SIDEBAR -->
+
+	<!-- NAVBAR -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu toggle-sidebar' ></i>
+			<form action="#">
+				<div class="form-group">
+					<input type="text" placeholder="Search...">
+					<i class='bx bx-search icon' ></i>
+				</div>
+			</form>
+			<a href="#" class="nav-link">
+				<i class='bx bxs-bell icon' ></i>
+				<span class="badge">5</span>
+			</a>
+
+
+
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			{% block content %}
+
+      		{% endblock %}
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- NAVBAR -->
+
+	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+	<script src="{% static 'dashboard/script.js' %}"></script>
+ <script>
+        $(document).ready(function () {
+            // Apply text-decoration: none to all anchor tags
+            $("a").css("text-decoration", "none");
+        });
+	 $(document).ready(function() {
+        // Detect clicks on <li> elements
+        $(".sidebar li").on("click", function() {
+            // Check if the screen width is for mobile devices
+            if (window.innerWidth <= 768) {
+                // Close the sidebar
+                $(".sidebar").removeClass("open");
+            }
+        });
+    });
+    </script>
+
+
+
+
+
+</body>
+</html>

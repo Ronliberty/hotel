@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}StarLight{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'dashboard/css/best.css' %}">
+    {% block styles %}{% endblock %}
+    {% block extra_js %}
+{% endblock %}
+</head>
+<body>
+    <!-- Wrapper for Sidebar and Main Content -->
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar-wrapper" class="bg-primary text-white">
+            <div class="sidebar-heading text-center py-3">
+                <h4>StarLight Hotel</h4>
+            </div>
+            <ul class="list-unstyled px-2">
+                <li><a href="{% url 'dashboard:rooms_dashboard' %}" class="text-white text-decoration-none py-2 px-3 d-block"><i class="fas fa-home me-2"></i>Home</a></li>
+                <li><a href="{% url 'rooms:booking-add' %}" class="text-white text-decoration-none py-2 px-3 d-block"><i class="fas fa-calendar-check me-2"></i>Book Now</a></li>
+
+                <li><a href="{% url 'rooms:booking-list' %}" class="text-white text-decoration-none py-2 px-3 d-block"><i class="fas fa-bed me-2"></i>Bookings</a></li>
+                <li><a href="{% url 'rooms:checkout_list' %}" class="text-white text-decoration-none py-2 px-3 d-block"><i class="fas fa-cash-register me-2"></i>Checkouts</a></li>
+               <li><a href="{% url 'rooms:room_service' %}" class="text-white text-decoration-none py-2 px-3 d-block"><i class="fas fa-bed me-2"></i>Rooms</a></li>
+
+                <li><a href="{% url 'logout' %}" class="text-white text-decoration-none py-2 px-3 d-block"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper" class="w-100">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+                <div class="container-fluid">
+                    <button class="btn btn-primary" id="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h5 class="ms-3 mb-0">StarLight Management System</h5>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <div class="container-fluid py-4">
+                {% block content %}
+                <!-- Page-specific content goes here -->
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        // Sidebar toggle functionality
+        $("#menu-toggle").click(function () {
+            $("#wrapper").toggleClass("toggled");
+        });
+
+    </script>
+</body>
+</html>

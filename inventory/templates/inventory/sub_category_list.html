@@ -1,0 +1,51 @@
+{% extends 'dashboard/main.html' %}
+{% block content %}
+{% load static %}
+   {% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% endblock %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title">Subcategories List</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <a href="{% url 'inventory:sub_category_add' %}" class="btn btn-success">Add New Subcategory</a>
+                    </div>
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Subcategory Name</th>
+                                <th scope="col">Category</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for subcategory in subcategories %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ subcategory.name }}</td>
+                                <td>{{ subcategory.category.name }}</td>
+                                <td class="text-center">
+                                    <a href="{% url 'inventory:sub_category_edit' subcategory.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="{% url 'inventory:sub_category_delete' subcategory.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">No subcategories available</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

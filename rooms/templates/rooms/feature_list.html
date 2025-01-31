@@ -1,0 +1,13 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+<h1>Feature List</h1>
+<a href="{% url 'rooms:feature-add' %}">Add Feature</a>
+<ul>
+    {% for feature in features %}
+        <li>
+            <a href="{% url 'rooms:feature-detail' feature.pk %}">{{ feature.name }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

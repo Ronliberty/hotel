@@ -1,0 +1,153 @@
+{% extends 'dashboard/layout.html' %}
+{% block content %}
+{% load static %}
+{% block styles %}
+<style>
+    /* Basic container styling */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Heading Styles */
+    h2 {
+        font-size: 2.5rem;
+        color: #333;
+        font-weight: 600;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+    }
+
+    h4 {
+        font-size: 1.5rem;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    /* Table styling */
+    table {
+        width: 100%;
+        margin-top: 15px;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+    }
+
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Empty state styling */
+    .text-center {
+        text-align: center;
+        font-style: italic;
+        color: #888;
+    }
+
+    /* Styling the grand total section */
+    .lead {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #007bff;
+    }
+
+    /* Responsive design for smaller screens */
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 2rem;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+        }
+
+        table th, table td {
+            font-size: 0.9rem;
+            padding: 10px;
+        }
+    }
+
+</style>
+{% endblock %}
+
+<div class="container my-5">
+    <h2 class="mb-4">Rooms Payment Summary</h2>
+
+    <!-- Start of the table -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Period</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="2"><h4>Daily Totals</h4></td>
+            </tr>
+            {% for daily_total in daily_totals %}
+            <tr>
+                <td>{{ daily_total.day }}</td>
+                <td>ksh{{ daily_total.total_amount }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" class="text-center">No daily totals available.</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="2"><h4>Monthly Totals</h4></td>
+            </tr>
+            {% for monthly_total in monthly_totals %}
+            <tr>
+                <td>{{ monthly_total.month }}</td>
+                <td>ksh{{ monthly_total.total_amount }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" class="text-center">No monthly totals available.</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="2"><h4>Yearly Totals</h4></td>
+            </tr>
+            {% for yearly_total in yearly_totals %}
+            <tr>
+                <td>{{ yearly_total.year }}</td>
+                <td>ksh{{ yearly_total.total_amount }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" class="text-center">No yearly totals available.</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="2"><h4>Grand Total</h4></td>
+            </tr>
+            <tr>
+                <td><strong>Grand Total</strong></td>
+                <td class="lead">ksh{{ grand_total }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

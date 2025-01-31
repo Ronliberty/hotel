@@ -1,0 +1,33 @@
+{% extends 'dashboard/main.html' %}
+{% block content %}
+{% load static %}
+   {% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% endblock %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title">Product Details</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p><strong>Category:</strong> {{ product.category.name }}</p>
+                    <p><strong>Price:</strong> ${{ product.price }}</p>
+                    <p><strong>Description:</strong> {{ product.description }}</p>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'inventory:product_list' %}" class="btn btn-secondary">Back to Products</a>
+                        {% if request.user.groups.filter(name__in=['manager', 'storekeeper']).exists() %}
+                        <a href="{% url 'inventory:product_edit' product.pk %}" class="btn btn-warning">Edit Product</a>
+                        <a href="{% url 'inventory:product_delete' product.pk %}" class="btn btn-danger">Delete Product</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

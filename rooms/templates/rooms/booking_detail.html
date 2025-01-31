@@ -1,0 +1,138 @@
+{% extends 'dashboard/best.html' %}
+{% load static %}
+{% block styles %}
+<style>
+/* Booking Details */
+.booking-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Booking Details Container */
+.booking-details {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Individual booking details */
+.booking-details p {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.booking-details strong {
+    color: #333;
+}
+
+/* Action Buttons */
+.booking-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Common button styles */
+.action-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Edit Button */
+.edit-btn {
+    background-color: #007bff;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.edit-btn:active {
+    background-color: #004085;
+    transform: translateY(0);
+}
+
+/* Delete Button */
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+.delete-btn:active {
+    background-color: #bd2130;
+    transform: translateY(0);
+}
+
+/* Back Button */
+.back-btn {
+    background-color: #6c757d;
+}
+
+.back-btn:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+.back-btn:active {
+    background-color: #495057;
+    transform: translateY(0);
+}
+
+/* Payment Button */
+.payment-btn {
+    background-color: #28a745;
+}
+
+.payment-btn:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.payment-btn:active {
+    background-color: #1e7e34;
+    transform: translateY(0);
+}
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+<h1 class="booking-title">Booking Details</h1>
+
+<div class="booking-details">
+    <p><strong>Room:</strong> {{ booking.room }}</p>
+    <p><strong>Customer:</strong> {{ booking.customer_name }}</p>
+    <p><strong>Phone:</strong> {{ booking.customer_phone }}</p>
+    <p><strong>Check-in:</strong> {{ booking.check_in_date }}</p>
+    <p><strong>Check-out:</strong> {{ booking.check_out_date }}</p>
+    <p><strong>Guests:</strong> {{ booking.guests }}</p>
+    <p><strong>Total Price:</strong> Ksh {{ booking.total_price }}</p>
+    <p><strong>Status:</strong> {{ booking.status }}</p>
+</div>
+
+<div class="booking-actions">
+    <a href="{% url 'rooms:booking-edit' booking.pk %}" class="action-btn edit-btn">Edit</a>
+    <a href="{% url 'rooms:booking-delete' booking.pk %}" class="action-btn delete-btn">Delete</a>
+    <a href="{% url 'rooms:booking-list' %}" class="action-btn back-btn">Back to List</a>
+    <a href="{% url 'rooms:add-payment' booking.id %}" class="action-btn payment-btn">Make Payment</a>
+</div>
+
+{% endblock %}

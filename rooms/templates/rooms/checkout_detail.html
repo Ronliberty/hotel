@@ -1,0 +1,19 @@
+{% extends "dashboard/best.html" %}
+{% block content %}
+<div class="container py-4">
+    <h2>Checkout Details</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Room {{ checkout.room.room_number }}</h5>
+            <p><strong>Customer Name:</strong> {{ checkout.customer_name }}</p>
+            <p><strong>Phone Number:</strong> {{ checkout.customer_phone }}</p>
+            <p><strong>Guests:</strong> {{ checkout.guests }}</p>
+            <p><strong>Check-in Date:</strong> {{ checkout.check_in_date }}</p>
+            <p><strong>Check-out Date:</strong> {{ checkout.check_out_date }}</p>
+            <p><strong>Total Price:</strong> ksh{{ checkout.total_price }}</p>
+            <p><strong>Booking Date:</strong> {{ checkout.booking_date }}</p>
+            <p><strong>Status:</strong> {{ checkout.get_status_display }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

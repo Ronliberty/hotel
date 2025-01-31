@@ -1,0 +1,55 @@
+{% extends "dashboard/best.html" %}
+{% block content %}
+{% load static %}
+   {% block styles %}
+
+<style>
+ .card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+</style>
+{% endblock %}
+<h2 class="text-center my-4">Available Rooms</h2>
+    <div class="container">
+        <div class="row">
+            {% for room in rooms %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ room.image.url }}" class="card-img-top" alt="Room Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Room {{ room.room_number }} ({{ room.get_room_type_display }})</h5>
+                            <p class="card-text">
+                                Capacity: {{ room.capacity }} guests<br>
+                                Price per Night: ksh{{ room.price_per_night }}<br>
+                                {% if room.is_available %}
+                                    <span class="badge bg-success">Available</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Not Available</span>
+                                {% endif %}
+                            </p>
+                            <a href="{% url 'rooms:booking-add' %}?room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
