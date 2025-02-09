@@ -19,7 +19,7 @@
                        <small class="text-muted">Created at: {{ order.created_at|date:"F j, Y, g:i a" }}</small>
                    </div>
                    <div>
-                       <a href="{% url 'cart:order-detail' order.id %}" class="btn btn-primary btn-sm me-2" aria-label="View details of order {{ order.id }}">View Details</a>
+                       <a href="{% url 'cart:order-det' order.id %}" class="btn btn-primary btn-sm me-2" aria-label="View details of order {{ order.id }}">View Details</a>
                        <a href="{% url 'cart:delete_pending_order' order.id %}" class="btn btn-danger btn-sm" aria-label="Delete order {{ order.id }}" onclick="return confirm('Are you sure you want to delete this order?')">Delete</a>
                    </div>
                </li>

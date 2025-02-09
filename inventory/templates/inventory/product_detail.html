@@ -20,10 +20,15 @@
 
                     <div class="d-flex justify-content-between mt-4">
                         <a href="{% url 'inventory:product_list' %}" class="btn btn-secondary">Back to Products</a>
-                        {% if request.user.groups.filter(name__in=['manager', 'storekeeper']).exists() %}
+
+
                         <a href="{% url 'inventory:product_edit' product.pk %}" class="btn btn-warning">Edit Product</a>
+                         {% if product.slug %}
                         <a href="{% url 'inventory:product_delete' product.pk %}" class="btn btn-danger">Delete Product</a>
+                        {% else %}
+                            <span>No details available</span>
                         {% endif %}
+
                     </div>
                 </div>
             </div>

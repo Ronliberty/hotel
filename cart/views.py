@@ -1,9 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, View
 from .models import MenuCategory, MenuItemProduct, MenuItem, Order, OrderItem
 from payment.models import Payment
 from django.db.models import Sum
-
+from .forms import MenuCategoryForm, MenuItemForm
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -14,7 +15,7 @@ from django.utils.timezone import now
 
 class MenuCategoryCreateView(CreateView):
     model = MenuCategory
-    fields = ['name', 'description']
+    form_class = MenuCategoryForm
     template_name = 'cart/menu_category_form.html'
     success_url = reverse_lazy('cart:menu_category_list')
 
@@ -138,7 +139,7 @@ class MenuItemDetailView(DetailView):
 class MenuItemCreateView(CreateView):
     model = MenuItem
     template_name = "cart/menuitem_form.html"
-    fields = ['name', 'category', 'description', 'price', 'is_available', 'currency', 'volume', 'weight', 'unit']
+    form_class = MenuItemForm
     success_url = reverse_lazy('cart:list_menu')
     def test_func(self):
         return self.request.user.groups.filter(name__in=['manager', 'storekeeper']).exists()
@@ -317,12 +318,21 @@ def search_menu_item(request):
 
 
 
-class OrderDetailView(DetailView):
+class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = 'cart/order_detail.html'  # Replace with your detail template
     context_object_name = 'order'
     def test_func(self):
         return self.request.user.groups.filter(name__in=['manager', 'cashier']).exists()
+
+class OrderCashierDetailView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = 'cart/order_det.html'
+    context_object_name = 'order'
+    def test_func(self):
+        return self.request.user.groups.filter(name='cashier').exists()
+
+
 
 
 class PendingOrdersView(ListView):

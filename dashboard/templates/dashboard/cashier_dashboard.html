@@ -1,15 +1,24 @@
 {% extends 'dashboard/base.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            {% if cashier %}
-                <h3>Welcome</h3>
-                <p>Current time: {{ current_time }}</p>
-            {% else %}
-                <p>You do not have access to the cashier dashboard.</p>
-            {% endif %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-4">
+                {% if cashier %}
+                    <h3 class="text-center">Welcome</h3>
+                    <p class="text-center text-muted">Current time: {{ current_time }}</p>
+
+                    <div class="text-center mt-4">
+                        <a href="{% url 'dashboard:rooms_dashboard' %}" class="btn btn-primary">Go to Rooms</a>
+
+                    </div>
+                {% else %}
+                    <p class="alert alert-danger text-center">
+                        You do not have access to the cashier dashboard.
+                    </p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

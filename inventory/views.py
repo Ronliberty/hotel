@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import MainCategory, SubCategory, Product, TaxCategory
 from django.contrib import messages
-from .forms import ProductForm
+from .forms import ProductForm, TaxCategoryForm
 from django.http import JsonResponse
 
 class MainCategoryListView(LoginRequiredMixin, ListView):
@@ -223,6 +223,8 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = "inventory/product_detail.html"
     context_object_name = "product"
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
     def test_func(self):
         return self.request.user.groups.filter(name__in=['manager', 'storekeeper', 'cashier']).exists()
 
@@ -260,6 +262,8 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = "inventory/product_confirm_delete.html"
     success_url = reverse_lazy("inventory:product_list")
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
 
 
     def test_func(self):
@@ -274,13 +278,13 @@ class TaxCategoryListView(ListView):
 
 class TaxCategoryCreateView(CreateView):
     model = TaxCategory
-    fields = ['tax_category', 'tax_desc', 'tax_percentage']
+    form_class = TaxCategoryForm
     template_name = "inventory/taxcategory_form.html"
     success_url = reverse_lazy('inventory:taxcategory-list')
 
 class TaxCategoryUpdateView(UpdateView):
     model = TaxCategory
-    fields = ['tax_category', 'tax_desc', 'tax_percentage']
+    form_class = TaxCategoryForm
     template_name = "inventory/taxcategory_form.html"
     success_url = reverse_lazy('inventory:taxcategory-list')
 

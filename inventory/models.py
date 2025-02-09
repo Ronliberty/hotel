@@ -69,12 +69,19 @@ class Product(models.Model):
     currency = models.CharField(max_length=3, default="Ksh")
     unit = models.CharField(max_length=50, null=True, blank=True, default="piece", help_text="Unit of measurement (e.g., piece, plate, pair)")
     tax_category = models.ForeignKey(TaxCategory, on_delete=models.RESTRICT, related_name="products")
-    slug = models.SlugField(max_length=125, unique=True, blank=True)
+    slug = models.SlugField(max_length=125, unique=True, blank=False)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="created_products")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     volume = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text="Volume in liters (e.g., 1.0 L)")
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text="Weight in grams (e.g., 500g)")
+
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)  # Automatically generate a slug from names
+        super().save(*args, **kwargs)
 
     def __str__(self):
         currency_display = self.currency if self.currency else "Unknown Currency"

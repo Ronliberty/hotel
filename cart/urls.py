@@ -6,7 +6,7 @@ from .views import (
     MenuItemProductListView, MenuItemProductDetailView, MenuItemProductUpdateView, MenuItemProductDeleteView,
     OrderDetailView, PendingOrdersView, CompletedOrdersView,
     UpdateCartItemView, ConfirmOrderView, CancelOrderView, MenuItemListView, MenuItemDetailView, MenuItemCreateView,
-    MenuItemUpdateView, MenuItemDeleteView, MenuItemProductCreateView, MenuManagerListView,
+    MenuItemUpdateView, MenuItemDeleteView, MenuItemProductCreateView, MenuManagerListView, OrderCashierDetailView,
 )
 
 app_name = 'cart'
@@ -17,6 +17,7 @@ urlpatterns = [
     path("cart/update/<int:menu_item_id>/", UpdateCartItemView.as_view(), name="update-cart-item"),
     path("cart/confirm/", ConfirmOrderView.as_view(), name="confirm-order"),
     path('order/<int:pk>/', OrderDetailView.as_view(), name='order-detail'),
+    path('order/<int:pk>/cashier/', OrderCashierDetailView.as_view(), name='order-det'),
     path("cart/cancel/", CancelOrderView.as_view(), name="cancel-order"),
     path('search/', views.search_menu_item, name='search-menu-item'),
     path('pending-orders/', PendingOrdersView.as_view(), name='pending-orders'),

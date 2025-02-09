@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Feature, Room, Booking, RoomPayment
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView, View
-from .forms import RoomAvailabilityForm, BookingForm, RoomPaymentForm
+from .forms import RoomAvailabilityForm, BookingForm, RoomPaymentForm, RoomCreateForm, RoomFeatureForm
 from django.http import JsonResponse
 from django.core.exceptions import ValidationError
 from django.contrib import messages
@@ -22,7 +22,7 @@ class FeatureListView(ListView):
 class FeatureCreateView(CreateView):
     model = Feature
     template_name = 'rooms/feature_form.html'
-    fields = ['name', 'description']
+    form_class = RoomFeatureForm
     success_url = reverse_lazy('rooms:feature-list')
     def test_func(self):
         return self.request.user.groups.filter(name='manager').exists()
@@ -39,7 +39,7 @@ class FeatureDetailView(DetailView):
 class FeatureUpdateView(UpdateView):
     model = Feature
     template_name = 'rooms/feature_form.html'
-    fields = ['name', 'description']
+    form_class = RoomFeatureForm
     success_url = reverse_lazy('rooms:feature-list')
     def test_func(self):
         return self.request.user.groups.filter(name='manager').exists()
@@ -64,7 +64,8 @@ class RoomListView(ListView):
 class RoomCreateView(CreateView):
     model = Room
     template_name = 'rooms/room_form.html'
-    fields = ['room_number', 'room_type', 'capacity', 'price_per_night', 'description', 'features', 'image']
+    form_class = RoomCreateForm
+
     success_url = reverse_lazy('rooms:rooms-list')
     def test_func(self):
         return self.request.user.groups.filter(name='manager').exists()
@@ -83,7 +84,8 @@ class RoomDetailView(DetailView):
 class RoomUpdateView(UpdateView):
     model = Room
     template_name = 'rooms/room_form.html'
-    fields = ['room_number', 'room_type', 'capacity', 'price_per_night', 'description', 'features', 'image']
+    form_class = RoomCreateForm
+
     success_url = reverse_lazy('rooms:rooms-list')
     def test_func(self):
         return self.request.user.groups.filter(name='manager').exists()

@@ -38,7 +38,7 @@
 			<li>
 				<a href="#"><i class='bx bxs-inbox icon' ></i> Categories <i class='bx bx-chevron-right icon-right' ></i></a>
 				<ul class="side-dropdown">
-					<li class="ajax-link"><a href="{% url 'inventory:main_category_add' %}" data-url="{% url 'inventory:main_category_add' %}">Add MainCategory</a></li>
+					<li class="ajax-link"><a href="{% url 'inventory:sub_add' %}" data-url="{% url 'inventory:sub_add' %}">Add MainCategory</a></li>
 					<li class="ajax-link"><a href="{% url 'inventory:main_category_list' %}" data-url="{% url 'inventory:main_category_list' %}">MainCategory List</a></li>
 					<li class="ajax-link"><a href="{% url 'inventory:sub_add' %}" data-url="{% url 'inventory:sub_add' %}">Add SubCategory</a></li>
 					<li class="ajax-link"><a href="{% url 'inventory:sub_list' %}" data-url="{% url 'inventory:sub_list' %}">SubCategory List</a></li>
@@ -69,13 +69,6 @@
 				</ul>
 
 			</li>
-			<li>
-				<a href="#"><i class='bx bxs-notepad icon' ></i> MenuProducts <i class='bx bx-chevron-right icon-right' ></i></a>
-				<ul class="side-dropdown">
-					<li><a href="{% url 'cart:menu_item_product_list' %}">Menu Product list</a></li>
-
-
-				</ul>
 
 
 				<li>

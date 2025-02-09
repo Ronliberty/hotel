@@ -1,70 +1,108 @@
 {% extends 'dashboard/main.html' %}
 {% block content %}
 {% load static %}
-   {% block styles %}
+
+{% block styles %}
+<!-- Bootstrap & FontAwesome -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .table th, .table td {
+        vertical-align: middle;
+    }
+    .btn-group a {
+        margin-right: 5px;
+    }
+</style>
 {% endblock %}
+
 <div class="container mt-5">
-    <h1 class="mb-4">Product List</h1>
-    <table class="table table-bordered">
-        <thead class="table-light">
-            <tr>
-                <th>Product Name</th>
-                <th>Code</th>
-                <th>Description</th>
-                <th>Sales Price</th>
-                <th>Discount</th>
-                <th>Quantity</th>
-                <th>Cost Price</th>
-                <th>Unit</th>
-                <th>Tax Category</th>
-                <th>Slug</th>
-                <th>Created By</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-                <th>Volume</th>
-                <th>Weight</th>
-                <th>Actions</th>
+    <h1 class="mb-4 text-center fw-bold text-primary">Product List</h1>
 
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in products %}
-            <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.code }}</td>
-                <td>{{ product.description }}</td>
+    <!-- Search and Filter Section -->
+    <div class="d-flex justify-content-between mb-3">
+        <input type="text" class="form-control w-50" placeholder="Search products..." id="searchInput">
+        <select class="form-select w-25">
+            <option>Filter by Category</option>
+            <option></option>
+            <option></option>
+        </select>
+    </div>
 
-                <td>ksh{{ product.sales_price }}</td>
-                <td>{{ product.discount }}%</td>
-                <td>{{ product.qty }}</td>
-                <td>ksh{{ product.cost_price }}</td>
-                <td>{{ product.unit }}</td>
-                <td>{{ product.tax_category }}</td>
-                <td>{{ product.slug }}</td>
-                <td>{{ product.created_by }}</td>
-                <td>{{ product.created_at|date:"Y-m-d H:i" }}</td>
-                <td>{{ product.updated_at|date:"Y-m-d H:i" }}</td>
-                <td>{{ product.volume }} L</td>
-                <td>{{ product.weight }} g</td>
-
-                <td>
-                    <a href="" class="btn btn-info btn-sm">View</a>
-                    <a href="" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="16" class="text-center">No products available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="card p-3">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-light text-center">
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Code</th>
+                        <th>Description</th>
+                        <th>Sales Price</th>
+                        <th>Discount</th>
+                        <th>Quantity</th>
+                        <th>Cost Price</th>
+                        <th>Unit</th>
+                        <th>Tax Category</th>
+                        <th>Created By</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.code }}</td>
+                        <td>{{ product.description }}</td>
+                        <td class="text-end">ksh{{ product.sales_price }}</td>
+                        <td class="text-end">{{ product.discount }}%</td>
+                        <td class="text-end">{{ product.qty }}</td>
+                        <td class="text-end">ksh{{ product.cost_price }}</td>
+                        <td>{{ product.unit }}</td>
+                        <td>{{ product.tax_category }}</td>
+                        <td>{{ product.created_by }}</td>
+                        <td>{{ product.created_at|date:"Y-m-d H:i" }}</td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a href="{% url 'inventory:product_detail' product.slug %}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <a href="{% url 'inventory:product_edit' product.pk %}" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="{% url 'inventory:product_delete' product.pk %}" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="12" class="text-center">No products available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<!-- Bootstrap JS and Popper.js -->
+<!-- JavaScript Enhancements -->
+<script>
+    document.getElementById("searchInput").addEventListener("keyup", function() {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("tbody tr");
+        rows.forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none";
+        });
+    });
+</script>
+
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 {% endblock %}

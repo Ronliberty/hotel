@@ -15,8 +15,6 @@
                 <div class="card-body">
                     <p class="lead">Are you sure you want to delete this product?</p>
                     <p><strong>{{ product.name }}</strong></p>
-                    <p><strong>Category:</strong> {{ product.category.name }}</p>
-                    <p><strong>Price:</strong> ${{ product.price }}</p>
 
                     <form method="post">
                         {% csrf_token %}

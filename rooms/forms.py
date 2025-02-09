@@ -1,5 +1,5 @@
 from django import forms
-from .models import Booking, RoomPayment
+from .models import Booking, RoomPayment, Room, Feature
 
 
 class RoomAvailabilityForm(forms.Form):
@@ -66,3 +66,30 @@ class RoomPaymentForm(forms.ModelForm):
         if booking:
             # Set the initial value of 'amount' field to the booking's total price
             self.fields['amount'].initial = booking.total_price  # Set the initial value for 'amount'
+
+
+class RoomCreateForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = ['room_number', 'room_type', 'capacity', 'price_per_night', 'description', 'features', 'image'] # Include amount here
+        widgets = {
+            'room_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter room number'}),
+            'room_type': forms.Select(attrs={'class': 'form-control'}),
+            'capacity': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
+            'price_per_night': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'description': forms.Textarea(
+                attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Enter room description'}),
+            'features': forms.CheckboxSelectMultiple(),
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+
+
+class RoomFeatureForm(forms.ModelForm):
+    class Meta:
+        model = Feature
+        fields = ['name', 'description']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter feature name'}),
+            'description': forms.Textarea(
+                attrs={'class': 'form-control', 'placeholder': 'Enter feature description', 'rows': 3}),
+        }

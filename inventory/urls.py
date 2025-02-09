@@ -28,10 +28,10 @@ urlpatterns = [
     path('sub/manager/<int:pk>/delete/', views.SubCategoryManagerDeleteView.as_view(), name='sub_delete'),
 
     path('products/', ProductListView.as_view(), name='product_list'),
-    path('products/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
+    path('products/detail/<slug:slug>/', ProductDetailView.as_view(), name='product_detail'),
     path('products/add/', ProductCreateView.as_view(), name='product_add'),
     path('products/<int:pk>/edit/', ProductUpdateView.as_view(), name='product_edit'),
-    path('products/<int:pk>/delete/', ProductDeleteView.as_view(), name='product_delete'),
+    path('products/delete/<int:pk>/', ProductDeleteView.as_view(), name='product_delete'),
 
 #manager
     path('our/product', ProductManagerListView.as_view(), name='list_products'),
