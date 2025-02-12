@@ -155,36 +155,36 @@ def mpesa_confirmation(request):
             transaction_id = data.get("TransID")
             amount = float(data.get("TransAmount", 0))
             phone_number = data.get("MSISDN")
-            bill_ref = data.get("BillRefNumber")  # This should match an order
+            bill_ref = data.get("BillRefNumber")  # Ensure this correctly maps to an Order
 
-            # Find order based on bill_ref (Ensure your Order model has a matching field)
+            # Find order based on bill_ref (Ensure Order has a corresponding field)
             order = get_object_or_404(Order, id=bill_ref)
 
             # Prevent duplicate payments
             if Payment.objects.filter(payment_id=transaction_id).exists():
                 return JsonResponse({"ResultCode": 1, "ResultDesc": "Duplicate transaction"})
 
-            # Generate a unique payment_id
-            payment_id = str(uuid.uuid4())
-
             # Set timezone to Kenya
             kenya_tz = pytz.timezone('Africa/Nairobi')
             payment_dt = timezone.now().astimezone(kenya_tz)
 
+            # Calculate new balance
+            new_balance = max(order.total_price - amount, 0)
+
             # Create the payment record
             payment = Payment.objects.create(
                 order=order,
-                payment_id=payment_id,
-                total_payment=order.total_price,  # Assume order has a total_price field
+                payment_id=transaction_id,  # Use Mpesa transaction ID
+                total_payment=order.total_price,
                 amount_paid=amount,
-                balance=max(order.total_price - amount, 0),
-                payment_type="MPESA",
-                user=order.user,  # Assign the order user
+                balance=new_balance,
+                payment_type="MOBILE",
+                user=order.user if order.user else None,  # Ensure user exists
                 payment_dt=payment_dt
             )
 
             # Update order status
-            if payment.balance == 0:
+            if new_balance == 0:
                 order.status = 'paid'
             else:
                 order.status = 'partially_paid'
@@ -199,5 +199,7 @@ def mpesa_confirmation(request):
             return JsonResponse({"ResultCode": 1, "ResultDesc": "Invalid JSON format"})
         except Order.DoesNotExist:
             return JsonResponse({"ResultCode": 1, "ResultDesc": "Order not found"})
+        except Exception as e:
+            return JsonResponse({"ResultCode": 1, "ResultDesc": f"Error: {str(e)}"})
     else:
         return JsonResponse({"ResultCode": 1, "ResultDesc": "Invalid request method"})

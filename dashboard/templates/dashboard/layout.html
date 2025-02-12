@@ -27,106 +27,110 @@
 			<li><a href="{% url 'dashboard:manager_dashboard' %}" class="active"><i class='bx bxs-dashboard icon' ></i> Dashboard</a></li>
 			<li class="divider" data-text="main">Main</li>
 			<li>
-				<a href="#"><i class='bx bxs-inbox icon' ></i> Products <i class='bx bx-chevron-right icon-right' ></i></a>
-				<ul class="side-dropdown">
-
-					<li class="ajax-link"><a href="{% url 'inventory:list_products' %}" data-url="{% url 'inventory:product_list' %}">Product List</a></li>
-
-
-				</ul>
-			</li>
 			<li>
-				<a href="#"><i class='bx bxs-inbox icon' ></i> Categories <i class='bx bx-chevron-right icon-right' ></i></a>
-				<ul class="side-dropdown">
-					<li class="ajax-link"><a href="{% url 'inventory:sub_add' %}" data-url="{% url 'inventory:sub_add' %}">Add MainCategory</a></li>
-					<li class="ajax-link"><a href="{% url 'inventory:main_category_list' %}" data-url="{% url 'inventory:main_category_list' %}">MainCategory List</a></li>
-					<li class="ajax-link"><a href="{% url 'inventory:sub_add' %}" data-url="{% url 'inventory:sub_add' %}">Add SubCategory</a></li>
-					<li class="ajax-link"><a href="{% url 'inventory:sub_list' %}" data-url="{% url 'inventory:sub_list' %}">SubCategory List</a></li>
-				</ul>
-			</li>
+    <a href="#"><i class='bx bx-box icon'></i> Products <i class='bx bx-chevron-right icon-right'></i></a>
+    <ul class="side-dropdown">
+        <li class="ajax-link">
+            <a href="{% url 'inventory:list_products' %}" data-url="{% url 'inventory:product_list' %}">
+                <i class='bx bx-list-ul'></i> Product List
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li>
+    <a href="#"><i class='bx bx-category icon'></i> Categories <i class='bx bx-chevron-right icon-right'></i></a>
+        <ul class="side-dropdown">
+            <li class="ajax-link">
+                <a href="{% url 'inventory:sub_add' %}" data-url="{% url 'inventory:sub_add' %}">
+                    <i class='bx bx-plus-circle'></i> Add MainCategory
+                </a>
+            </li>
+            <li class="ajax-link">
+                <a href="{% url 'inventory:main_category_list' %}" data-url="{% url 'inventory:main_category_list' %}">
+                    <i class='bx bx-folder'></i> MainCategory List
+                </a>
+            </li>
+            <li class="ajax-link">
+                <a href="{% url 'inventory:sub_add' %}" data-url="{% url 'inventory:sub_add' %}">
+                    <i class='bx bx-plus-circle'></i> Add SubCategory
+                </a>
+            </li>
+            <li class="ajax-link">
+                <a href="{% url 'inventory:sub_list' %}" data-url="{% url 'inventory:sub_list' %}">
+                    <i class='bx bx-folder-open'></i> SubCategory List
+                </a>
+            </li>
+        </ul>
+    </li>
+
 
 
 
 			<li>
-				<a href="#"><i class='bx bxs-notepad icon' ></i> MenuCategories <i class='bx bx-chevron-right icon-right' ></i></a>
-				<ul class="side-dropdown">
-					<li><a href="{% url 'cart:menu_category_create' %}">Add MenuCategory</a></li>
-					<li><a href="{% url 'cart:menu_category_list' %}">MenuCategory list</a></li>
-
-
-
-				</ul>
-				</li>
-
-
-
-			<li>
-
-				<a href="#"><i class='bx bxs-notepad icon' ></i> Menu <i class='bx bx-chevron-right icon-right' ></i></a>
-				<ul class="side-dropdown">
-					<li><a href="{% url 'cart:menuitem-create' %}">AddMenu</a></li>
-					<li><a href="{% url 'cart:list_menu' %}">MenuList</a></li>
-				</ul>
-
-			</li>
-
-
 				<li>
-				<a href="#"><i class='bx bxs-notepad icon' ></i> Rooms <i class='bx bx-chevron-right icon-right' ></i></a>
-				<ul class="side-dropdown">
-					<li><a href="{% url 'rooms:room-add' %}">Rooms Add</a></li>
-					<li><a href="{% url 'rooms:rooms-list' %}">Rooms list</a></li>
-					<li><a href="{% url 'rooms:feature-add' %}">Features Add</a></li>
-					<li><a href="{% url 'rooms:feature-list' %}">Features List</a></li>
-					<li><a href="{% url 'rooms:paid_payments_list' %}">Paid List</a></li>
+    <a href="#"><i class='bx bx-category icon'></i> Menu Categories <i class='bx bx-chevron-right icon-right'></i></a>
+    <ul class="side-dropdown">
+        <li><a href="{% url 'cart:menu_category_create' %}"><i class='bx bx-plus-circle'></i> Add MenuCategory</a></li>
+        <li><a href="{% url 'cart:menu_category_list' %}"><i class='bx bx-list-ul'></i> MenuCategory List</a></li>
+    </ul>
+</li>
 
-					<li><a href="{% url 'rooms:payment_summary' %}">Payment Summary</a></li>
+<li>
+    <a href="#"><i class='bx bx-food-menu icon'></i> Menu <i class='bx bx-chevron-right icon-right'></i></a>
+    <ul class="side-dropdown">
+        <li><a href="{% url 'cart:menuitem-create' %}"><i class='bx bx-plus-circle'></i> Add Menu</a></li>
+        <li><a href="{% url 'cart:list_menu' %}"><i class='bx bx-list-ul'></i> Menu List</a></li>
+    </ul>
+</li>
 
-				</ul>
+<li>
+    <a href="#"><i class='bx bx-bed icon'></i> Rooms <i class='bx bx-chevron-right icon-right'></i></a>
+    <ul class="side-dropdown">
+        <li><a href="{% url 'rooms:room-add' %}"><i class='bx bx-plus-circle'></i> Add Room</a></li>
+        <li><a href="{% url 'rooms:rooms-list' %}"><i class='bx bx-list-check'></i> Rooms List</a></li>
+        <li><a href="{% url 'rooms:feature-add' %}"><i class='bx bx-star'></i> Add Feature</a></li>
+        <li><a href="{% url 'rooms:feature-list' %}"><i class='bx bx-list-ul'></i> Feature List</a></li>
+        <li><a href="{% url 'rooms:paid_payments_list' %}"><i class='bx bx-money'></i> Paid List</a></li>
+        <li><a href="{% url 'rooms:payment_summary' %}"><i class='bx bx-receipt'></i> Payment Summary</a></li>
+    </ul>
+</li>
 
-				<li>
-			<li>
-				<a href="#"><i class='bx bxs-notepad icon' >Transaction</i>  <i class='bx bx-chevron-right icon-right' ></i></a>
-				<ul class="side-dropdown">
-					<li class="ajax-link"><a href="{% url 'cart:completed-orders' %}" data-url="{% url 'cart:completed-orders' %}">All Transactions</a></li>
-					<li class="ajax-link"><a href="{% url 'cart:deleted_orders' %}" data-url="{% url 'cart:deleted_orders' %}">Deleted Transactions </a></li>
+		<li>
+    <a href="#"><i class='bx bx-transfer icon'></i> Transactions <i class='bx bx-chevron-right icon-right'></i></a>
+    <ul class="side-dropdown">
+        <li class="ajax-link">
+            <a href="{% url 'cart:completed-orders' %}" data-url="{% url 'cart:completed-orders' %}">
+                <i class='bx bx-list-check'></i> All Transactions
+            </a>
+        </li>
+        <li class="ajax-link">
+            <a href="{% url 'cart:deleted_orders' %}" data-url="{% url 'cart:deleted_orders' %}">
+                <i class='bx bx-trash'></i> Deleted Transactions
+            </a>
+        </li>
+        <li>
+            <a href="#"><i class='bx bx-time'></i> Recent Transactions</a>
+        </li>
+    </ul>
+</li>
+</ul>
 
-
-					<li><a href=""> Recent Transaction</a></li>
-
-
-				</ul>
-			</li>
-		</ul>
-		<div class="ads">
-		{% if user.is_superuser %}
+<div class="ads">
+    {% if user.is_superuser %}
         <a href="{% url 'dashboard:super_dashboard' %}" class="btn-upgrade">Home</a>
     {% else %}
         <a href="{% url 'logout' %}" class="btn-upgrade">Logout</a>
     {% endif %}
-		</div>
+</div>
+
 	</section>
 	<!-- SIDEBAR -->
 
 	<!-- NAVBAR -->
 	<section id="content">
 		<!-- NAVBAR -->
-		<nav>
-			<i class='bx bx-menu toggle-sidebar' ></i>
-			<form action="#">
-				<div class="form-group">
-					<input type="text" placeholder="Search...">
-					<i class='bx bx-search icon' ></i>
-				</div>
-			</form>
-			<a href="#" class="nav-link">
-				<i class='bx bxs-bell icon' ></i>
-				<span class="badge">5</span>
-			</a>
 
-
-
-		</nav>
 		<!-- NAVBAR -->
 
 		<!-- MAIN -->

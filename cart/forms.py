@@ -35,7 +35,7 @@ class MenuItemForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Enter item description'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter price'}),
             'is_available': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'currency': forms.Select(attrs={'class': 'form-control'}),
+
             'volume': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter volume'}),
             'weight': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter weight'}),
             'unit': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter unit'}),

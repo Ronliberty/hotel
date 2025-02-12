@@ -25,9 +25,9 @@ SECRET_KEY = 'django-insecure-q(lyh-dabyc2i66ojj=ak_c^z%x=y+=$na^k7e0l#qi%qd4-3e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['028e-102-0-0-244.ngrok-free.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['starlighthotel.pythonanywhere.com']
 
-CSRF_TRUSTED_ORIGINS = [ 'https://028e-102-0-0-244.ngrok-free.app' ]
+
 
 
 # Application definition
@@ -130,6 +130,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type

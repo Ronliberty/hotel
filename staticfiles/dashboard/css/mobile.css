@@ -1,0 +1,235 @@
+
+
+
+/* Small phones (up to 375px) */
+@media (max-width: 375px) {
+    .hamburger-menu {
+        display: none;
+      }
+
+      .logo-name {
+        display: none;
+
+
+      }
+      .right-section {
+
+        margin-right: 0;
+        gap: 1rem;
+        margin-left: 0;
+       width: 100%;
+
+
+      }
+      .left-section{
+        display: none;
+
+      }
+      .icon-settings{
+
+
+
+      }
+      .sidebar{
+        display: none;
+      }
+      .main-links {
+        list-style:;
+        margin-left: 0;
+        padding: 0;
+        overflow-x: scroll;
+        width: 100%;
+        }
+
+        .main-links::-webkit-scrollbar {
+          display: none;
+        }
+
+        body {
+
+
+
+          padding: 10px 10px;
+
+        }
+        .footerbar {
+
+          color:#000;
+          text-align: center;
+          padding: 1rem;
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          margin-left: 0;
+          justify-content: space-between;
+          display: flex; /* Ensure it's a flex container */
+          justify-content: space-between; /* Distributes child elements */
+          align-items: center; /* Centers items vertically */
+
+          background-color: #f0e6e6;
+        }
+        .footlink {
+        text-decoration: none;
+        gap: 6rem;
+        font-size: 1.9rem;
+        cursor: pointer;
+        margin-right: 1.5rem;
+        margin-left: 1.8rem;
+        }
+}
+
+/* Medium phones (up to 425px) */
+@media (max-width: 425px) {
+    .hamburger-menu {
+        display: none;
+      }
+
+      .logo-name {
+        display: none;
+
+
+      }
+      .right-section {
+
+        margin-right: 0;
+        gap: 1rem;
+        margin-left: 0;
+       width: 100%;
+
+
+      }
+      .left-section{
+        display: none;
+
+      }
+
+      .icon-settings{
+
+
+
+      }
+      .sidebar{
+        display: none;
+      }
+      .main-links {
+        list-style:;
+        margin-left: 0;
+        padding: 0;
+        }
+        .main-links::-webkit-scrollbar {
+          display: none;
+        }
+        body {
+
+
+
+          padding: 10px 10px;
+
+        }
+        .footerbar {
+
+          color:#000;
+          text-align: center;
+          padding: 1rem;
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          margin-left: 0;
+          justify-content: space-between;
+          display: flex; /* Ensure it's a flex container */
+          justify-content: space-between; /* Distributes child elements */
+          align-items: center; /* Centers items vertically */
+
+          background-color: #f0e6e6;
+        }
+        .footlink {
+        text-decoration: none;
+        gap: 6rem;
+        font-size: 1.9rem;
+        cursor: pointer;
+        margin-right: 1.5rem;
+        margin-left: 1.8rem;
+        }
+}
+
+/* Large phones and phablets (up to 768px) */
+@media (max-width: 768px) {
+    .hamburger-menu {
+      display: none;
+      }
+
+      .logo-name {
+        display: none;
+
+
+      }
+      .right-section {
+
+        margin-right: 0;
+
+        margin-left: 0;
+       width: 100%;
+       padding-left: 1rem;
+
+
+      }
+      .left-section{
+        display: none;
+
+      }
+      .icon-settings{
+
+
+
+      }
+
+
+      .sidebar{
+        display: none;
+      }
+      .main-links {
+        list-style:;
+        margin-left: 0;
+        padding: 0;
+        }
+
+        .main-links::-webkit-scrollbar {
+          display: none;
+        }
+        body {
+
+          margin: 0;
+
+          padding: 0;
+
+        }
+        .footerbar {
+
+          color:#000;
+          text-align: center;
+          padding: 1rem;
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          margin-left: 0;
+          justify-content: space-between;
+          display: flex; /* Ensure it's a flex container */
+          justify-content: space-between; /* Distributes child elements */
+          align-items: center; /* Centers items vertically */
+
+          background-color: #f0e6e6;
+        }
+        .footlink {
+        text-decoration: none;
+        gap: 6rem;
+        font-size: 1.9rem;
+        cursor: pointer;
+        margin-right: 1.5rem;
+        margin-left: 1.8rem;
+        }
+
+
+
+
+}
+

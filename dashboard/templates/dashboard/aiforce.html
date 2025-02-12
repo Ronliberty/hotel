@@ -27,9 +27,7 @@
             <div class="right-section">
             <div class="icon-settings">
 
-                    <a href="" class="user">
-                        <i class='bx bx-user' ></i>
-                    </a>
+
 
             </div>
 
@@ -46,25 +44,33 @@
                     <i class='bx bx-chevron-down'></i>
                 </a>
             </div>
-            <div class="dropdown-content">
-                <div class="sidebar-link">
-                    <a href="{% url 'dashboard:super_dashboard' %}" class="home-link" style="color: black;"><i class='bx bx-home'></i></a>
-                    <div><a href="{% url 'dashboard:super_dashboard' %}" class="home-link" style="color: black;">Home</a></div>
-                </div>
-                <div class="sidebar-link">
-                    <a href="{% url 'dashboard:manager_dashboard' %}" class="home-link" style="color: black;"><i class='bx bxs-user'></i></a>
-                    <div><a href="{% url 'dashboard:manager_dashboard' %}" class="home-link" style="color: black;">Management</a></div>
-                </div>
-                <div class="sidebar-link">
-                    <a href="{% url 'account:user_management' %}" class="home-link" style="color: black;"><i class='bx bx-male-female'></i></a>
-                    <div><a href="{% url 'account:user_management' %}" class="home-link" style="color: black;">Users</a></div>
+           <div class="dropdown-content">
+                    <div class="sidebar-link">
+                        <a href="{% url 'dashboard:super_dashboard' %}" class="home-link" style="color: black;">
+                            <i class='bx bx-home'></i>
+                        </a>
+                        <div><a href="{% url 'dashboard:super_dashboard' %}" class="home-link" style="color: black;">Home</a></div>
+                    </div>
+                    <div class="sidebar-link">
+                        <a href="{% url 'dashboard:manager_dashboard' %}" class="home-link" style="color: black;">
+                            <i class='bx bx-briefcase'></i>
+                        </a>
+                        <div><a href="{% url 'dashboard:manager_dashboard' %}" class="home-link" style="color: black;">Management</a></div>
+                    </div>
+                    <div class="sidebar-link">
+                        <a href="{% url 'account:user_management' %}" class="home-link" style="color: black;">
+                            <i class='bx bx-group'></i>
+                        </a>
+                        <div><a href="{% url 'account:user_management' %}" class="home-link" style="color: black;">Users</a></div>
+                    </div>
+                    <div class="sidebar-link">
+                        <a href="{% url 'logout' %}" class="home-link" style="color: black;">
+                            <i class='bx bx-log-out'></i>
+                        </a>
+                        <div><a href="{% url 'logout' %}" class="home-link" style="color: black;">Logout</a></div>
+                    </div>
                 </div>
 
-
-                <div class="sidebar-link">
-                    <a href="{% url 'logout' %}" class="home-link" style="color: black;"><i class='bx bx-help-circle'></i></a>
-                    <div><a href="{% url 'logout' %}" class="home-link" style="color: black;">logout</a></div>
-                </div>
             </div>
         </div>
     </nav>
@@ -82,13 +88,22 @@
     </main>
    <footer class="footerbar">
     <div >
-        <a href="{% url 'dashboard:super_dashboard' %}" class="footlink" style="text-decoration: none;"><i class='bx bx-home' ></i></a>
+        <a href="{% url 'dashboard:super_dashboard' %}" class="footlink" style="text-decoration: none;">
+        <i class='bx bx-home'></i>
+        </a>
 
-            <a href="{% url 'dashboard:manager_dashboard' %}" class="footlink" style="text-decoration: none;"><i class='bx bxs-user' ></i></a>
+        <a href="{% url 'dashboard:manager_dashboard' %}" class="footlink" style="text-decoration: none;">
+            <i class='bx bx-briefcase'></i> <!-- Management -->
+        </a>
 
-            <a href="{% url 'account:user_management' %}" class="footlink" style="text-decoration: none;"><i class='bx bx-male-female'></i></a>
+        <a href="{% url 'account:user_management' %}" class="footlink" style="text-decoration: none;">
+            <i class='bx bx-group'></i> <!-- Users -->
+        </a>
 
-            <a href="{% url 'logout' %}" class="footlink" style="text-decoration: none;"><i class='bx bx-history'></i></a>
+        <a href="{% url 'logout' %}" class="footlink" style="text-decoration: none;">
+            <i class='bx bx-log-out'></i> <!-- Logout -->
+        </a>
+
 
 
 

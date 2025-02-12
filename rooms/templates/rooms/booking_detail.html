@@ -132,7 +132,9 @@
     <a href="{% url 'rooms:booking-edit' booking.pk %}" class="action-btn edit-btn">Edit</a>
     <a href="{% url 'rooms:booking-delete' booking.pk %}" class="action-btn delete-btn">Delete</a>
     <a href="{% url 'rooms:booking-list' %}" class="action-btn back-btn">Back to List</a>
-    <a href="{% url 'rooms:add-payment' booking.id %}" class="action-btn payment-btn">Make Payment</a>
+    {% if booking.status != 'CONFIRMED' %}
+        <a href="{% url 'rooms:add-payment' booking.id %}" class="action-btn payment-btn">Make Payment</a>
+    {% endif %}
 </div>
 
 {% endblock %}

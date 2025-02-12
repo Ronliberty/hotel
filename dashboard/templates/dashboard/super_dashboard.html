@@ -156,10 +156,17 @@
                 <h2>Sales Overview</h2>
 
             <ul>
-                <li style="text-decoration: none; color: black;"><strong>Total Room Payments:</strong> {{ total_payment_rooms }}</li>
-                <li style="text-decoration: none; color: black;"><strong>Total Restaurant Payments:</strong> {{ total_payment_payments }}</li>
-                <li style="text-decoration: none; color: black;"><strong>Total Amount:</strong> {{ combined_total_payment }}</li>
-            </ul>
+                <li style="list-style: none; color: black;">
+                    <strong>Total Room Payments:</strong> {{ total_payment_rooms }}
+                </li>
+                <li style="list-style: none; color: black;">
+                    <strong>Total Restaurant Payments:</strong>  {{ total_payment_payments }}
+                </li>
+                <li style="list-style: none; color: black;">
+                    <strong>Total Amount:</strong> Ksh {{ combined_total_payment }}
+                </li>
+
+                            </ul>
         </div>
            </a>
 
@@ -173,7 +180,7 @@
                     <div class="card">
                         <p><strong>Payment ID:</strong> {{ payment.payment_id }}</p>
                         <p><strong>User:</strong> {{ payment.user.username }}</p>
-                        <p><strong>Amount:</strong> {{ payment.amount }}</p>
+                        <p><strong>Amount:</strong>ksh {{ payment.amount }}</p>
                         <p><strong>Payment Type:</strong> {{ payment.payment_type }}</p>
                         <p><strong>Payment Date:</strong> {{ payment.payment_date }}</p>
                     </div>
@@ -188,27 +195,9 @@
 <!--            {% endif %}-->
         </div>
 
-        <!-- Total Room Payments - Replacing table with cards -->
-<!--        <div>-->
-<!--            <a href="{% url 'rooms:paid_payments_list' %}">-->
-<!--                <h2>Total Room Payments</h2>-->
-<!--            </a>-->
-<!--            <div class="card-container">-->
-<!--                {% for payment in payments %}-->
-<!--                    <div class="card">-->
-<!--                        <p><strong>Payment ID:</strong> {{ payment.payment_id }}</p>-->
-<!--                        <p><strong>User:</strong> {{ payment.user.username }}</p>-->
-<!--                        <p><strong>Amount:</strong> {{ payment.amount }}</p>-->
-<!--                        <p><strong>Payment Type:</strong> {{ payment.payment_type }}</p>-->
-<!--                        <p><strong>Payment Date:</strong> {{ payment.payment_date }}</p>-->
-<!--                    </div>-->
-<!--                {% empty %}-->
-<!--                    <p>No recent payments available.</p>-->
-<!--                {% endfor %}-->
-<!--            </div>-->
-<!--        </div>-->
 
-        <!-- Recent Products - Replacing table with cards -->
+
+
         <div>
             <a href="{% url 'cart:list_menu' %}">
                 <h2>Store Products</h2>

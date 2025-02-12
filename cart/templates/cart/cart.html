@@ -40,7 +40,7 @@
                 <tr>
                     <td>{{ item.name }}</td>
                     <td>{{ item.description }}</td>
-                    <td>${{ item.price }}</td>
+                    <td>ksh{{ item.price }}</td>
                     <td>
                         <form method="post" action="{% url 'cart:add-to-cart' item.id %}" class="d-inline">
                             {% csrf_token %}

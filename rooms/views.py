@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Feature, Room, Booking, RoomPayment
 from django.urls import reverse_lazy, reverse
@@ -9,6 +10,8 @@ from django.contrib import messages
 from django.db.models import Count, Sum
 from django.db.models.functions import TruncDate
 from datetime import date
+from django.utils.timezone import now
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 class FeatureListView(ListView):
     model = Feature
@@ -157,6 +160,11 @@ class BookingListView(ListView):
         return self.request.user.groups.filter(name='storekeeper').exists()
 
 
+
+
+
+logger = logging.getLogger(__name__)  # Setup logging
+
 class BookingCreateView(CreateView):
     model = Booking
     template_name = 'rooms/booking_form.html'
@@ -165,11 +173,34 @@ class BookingCreateView(CreateView):
 
     def form_valid(self, form):
         try:
+            room = form.instance.room
+            check_in = form.instance.check_in_date  # Matches your model
+            check_out = form.instance.check_out_date  # Matches your model
+
+            # Use the model method to check availability
+            if not room.is_available_for_dates(check_in, check_out):
+                form.add_error(None, "This room is already booked for the selected dates.")
+                return self.form_invalid(form)
+
+            # Calculate total price and validate the form
             form.instance.total_price = form.instance.calculate_total_price()
-            form.instance.full_clean()  # Run validations
-            return super().form_valid(form)
+            form.instance.full_clean()  # Run model validation
+
+            return super().form_valid(form)  # Proceed with saving the form
+
+        except AttributeError as e:
+            logger.error(f"AttributeError in BookingCreateView: {e}", exc_info=True)
+            form.add_error(None, "An unexpected error occurred. Please try again later.")
+            return self.form_invalid(form)
+
         except ValidationError as e:
+            logger.error(f"ValidationError in BookingCreateView: {e}", exc_info=True)
             form.add_error(None, e.message)
+            return self.form_invalid(form)
+
+        except Exception as e:
+            logger.error(f"Unexpected error in BookingCreateView: {e}", exc_info=True)
+            form.add_error(None, "An unexpected error occurred. Please contact support.")
             return self.form_invalid(form)
 
     def get_initial(self):
@@ -182,11 +213,12 @@ class BookingCreateView(CreateView):
 
         return initial
 
-
-
-
     def test_func(self):
-            return self.request.user.groups.filter(name='roomkeeper').exists()
+        return self.request.user.groups.filter(name='roomkeeper').exists()
+
+
+
+
 
 
 class BookingDetailView(DetailView):

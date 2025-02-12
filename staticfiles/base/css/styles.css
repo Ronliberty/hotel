@@ -1,0 +1,209 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #f9f9f9; /* Light background for better contrast */
+}
+
+/* Navigation Bar */
+.navbar {
+  background-color: #3498db; /* Soft blue color for a welcoming feel */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navname {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+}
+
+.navlinks {
+  display: flex;
+  gap: 1rem;
+}
+
+.ullinks {
+  display: flex;
+  list-style: none;
+}
+
+.links {
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-right: 1.5rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.links:hover {
+  color: #ecf0f1; /* Lighter hover effect for links */
+}
+
+/* Hero Section */
+.hero_sect {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin-top: 5rem;
+  background-color: #ecf0f1; /* Light grey background for section */
+  color: #2c3e50; /* Dark text for contrast */
+  text-align: center;
+  padding: 3rem;
+}
+
+.hero h2 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #2c3e50; /* Dark text for title */
+}
+
+.hero p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #7f8c8d; /* Subtle text color for description */
+}
+
+.btn {
+  background-color: #3498db; /* Soft blue button */
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #2980b9; /* Slightly darker blue on hover */
+}
+
+/* Loader */
+.loader .spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+
+/* Large Screens (Desktops) */
+@media (min-width: 1024px) {
+  .navbar {
+    padding: 1.5rem 3rem;
+  }
+
+  .hero {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 4rem 6rem;
+  }
+
+  .hero h2 {
+    font-size: 4rem;
+  }
+
+  .hero p {
+    font-size: 1.8rem;
+  }
+
+  .btn {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.3rem;
+  }
+}
+
+/* Medium Screens (Tablets) */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .navbar {
+    padding: 1.2rem 2rem;
+  }
+
+  .hero {
+    padding: 3rem 4rem;
+  }
+
+  .hero h2 {
+    font-size: 2.8rem;
+  }
+
+  .hero p {
+    font-size: 1.6rem;
+  }
+
+  .btn {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* Small Screens (Phones) */
+@media (max-width: 767px) and (min-width: 481px) {
+  .navbar {
+    padding: 1rem 1.5rem;
+  }
+
+  .hero_sect {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 3rem;
+    height: 80vh;
+  }
+
+  .hero h2 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1.4rem;
+  }
+
+  .btn {
+    padding: 0.9rem 1.8rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Extra Small Screens (Phones) */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .hero {
+    padding: 2rem 2rem;
+  }
+
+  .hero h2 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+  }
+
+  .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+}

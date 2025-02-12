@@ -13,6 +13,18 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Error Message */
+.form-error {
+    color: #d9534f;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+}
+
 /* Form Groups */
 .form-group {
     margin-bottom: 15px;
@@ -44,13 +56,6 @@
     border-color: #4caf50;
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
     outline: none;
-}
-
-/* Error Styling */
-.form-error {
-    color: #d9534f;
-    font-size: 12px;
-    margin-top: 5px;
 }
 
 /* Submit Button */
@@ -116,6 +121,15 @@
 <form method="post" id="booking-form">
     {% csrf_token %}
 
+    <!-- Display Form Errors (For Room Already Booked Message) -->
+    {% if form.non_field_errors %}
+    <div class="form-error">
+        {% for error in form.non_field_errors %}
+        <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <div class="form-group">
         <label for="id_room">{{ form.room.label }}</label>
         {{ form.room }}
@@ -167,5 +181,6 @@
     <button type="submit" class="custom-submit-btn">Save</button>
 </form>
 
-<a href="{% url 'rooms:booking-list' %}" class="bac-link">Back to List</a>
+<a href="{% url 'rooms:booking-list' %}" class="bac-btn">Back to List</a>
+
 {% endblock %}
