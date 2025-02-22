@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-q(lyh-dabyc2i66ojj=ak_c^z%x=y+=$na^k7e0l#qi%qd4-3e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['starlighthotel.pythonanywhere.com']
+ALLOWED_HOSTS = ['starlitplaza.pythonanywhere.com']
 
 
 
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
     'dashboard',
     'base',
     'cart',
@@ -127,7 +129,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -136,7 +137,33 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'account:role_based_redirect'
 
 LOGOUT_REDIRECT_URL = 'base:index'
+MPESA_ENVIRONMENT = 'sandbox'
+
+
+
+MPESA_CONSUMER_KEY = 'd3ca5ui0RGqUopYLwCtrFKYDtqDDvsrKELdWymplDqhnoeZL'
+MPESA_CONSUMER_SECRET = 'zoDSks1iqXdAYgLGK87t3SCgKs9OWjc3EAnrEjY9CamaHshee7XGnLZx8p1HjBhV'
+
+
+CONFIRMATION_URL = "https://starlighthotel.pythonanywhere.com/mpesa/confirmation"
+VALIDATION_URL = "https://starlighthotel.pythonanywhere.com/mpesa/validation"
+
+MPESA_SHORTCODE = '562661'
+
+
+
+
+MPESA_SHORTCODE_TYPE = 'tillnumber'
+
+
+
+
+
+
+MPESA_INITIATOR_USERNAME = 'testapi'
+MPESA_INITIATOR_SECURITY_CREDENTIAL = 'Safaricom999!*!'

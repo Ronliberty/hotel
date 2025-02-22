@@ -12,6 +12,9 @@ from decimal import Decimal
 import re
 from django.http import HttpResponseForbidden
 from django.utils.timezone import now
+from django.db.models import F
+from django.db import transaction
+from django.core.exceptions import ValidationError
 
 class MenuCategoryCreateView(CreateView):
     model = MenuCategory
@@ -452,6 +455,24 @@ def delete_pending_order(request, pk):
 
     return redirect('cart:pending-orders')
 
+def deduct_counter_stock(sale):
+    """Deducts stock from CounterStock when a menu item is sold."""
+    menu_item = sale.menu_item
+    product = menu_item.product
+    qty_to_deduct = menu_item.qty_used_per_sale * sale.quantity_sold
 
+    # Find the counter stock entry for this product
+    counter_stock = CounterStock.objects.filter(product=product).first()
+
+    if counter_stock:
+        if counter_stock.qty >= qty_to_deduct:
+            # Deduct the stock safely within a transaction
+            with transaction.atomic():
+                counter_stock.qty = F("qty") - qty_to_deduct
+                counter_stock.save()
+        else:
+            raise ValidationError(f"Not enough stock for {product.name}. Available: {counter_stock.qty}, Required: {qty_to_deduct}")
+    else:
+        raise ValidationError(f"No counter stock entry found for {product.name}.")
 
 

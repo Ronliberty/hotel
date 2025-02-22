@@ -1,0 +1,33 @@
+{% extends 'dashboard/layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Submit Stock Data to KRA</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="shadow p-4 bg-white rounded">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">{{ form.invoice_number.label_tag }} {{ form.invoice_number }}</div>
+            <div class="col-md-6">{{ form.bought_at.label_tag }} {{ form.bought_at }}</div>
+            <div class="col-md-6">{{ form.product.label_tag }} {{ form.product }}</div>
+            <div class="col-md-6">{{ form.qty_sold.label_tag }} {{ form.qty_sold }}</div>
+            <div class="col-md-6">{{ form.sales_price.label_tag }} {{ form.sales_price }}</div>
+            <div class="col-md-6">{{ form.discount.label_tag }} {{ form.discount }}</div>
+            <div class="col-md-6">{{ form.tax_category.label_tag }} {{ form.tax_category }}</div>
+            <div class="col-md-6">{{ form.tax_amount.label_tag }} {{ form.tax_amount }}</div>
+            <div class="col-md-6">{{ form.total_amount.label_tag }} {{ form.total_amount }}</div>
+            <div class="col-md-6">{{ form.currency.label_tag }} {{ form.currency }}</div>
+            <div class="col-md-6">{{ form.issued_by.label_tag }} {{ form.issued_by }}</div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'dashboard/main.html' %}
+
+{% block content %}
+<h2>Stock List</h2>
+
+<h3>Counter Stock</h3>
+<table>
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+    </tr>
+    {% for stock in counter_stock %}
+    <tr>
+        <td>{{ stock.product.name }}</td>
+        <td>{{ stock.qty }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Kitchen Stock</h3>
+<table>
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+    </tr>
+    {% for stock in kitchen_stock %}
+    <tr>
+        <td>{{ stock.product.name }}</td>
+        <td>{{ stock.qty }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

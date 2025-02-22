@@ -6,7 +6,7 @@ from .views import (
     MenuItemProductListView, MenuItemProductDetailView, MenuItemProductUpdateView, MenuItemProductDeleteView,
     OrderDetailView, PendingOrdersView, CompletedOrdersView,
     UpdateCartItemView, ConfirmOrderView, CancelOrderView, MenuItemListView, MenuItemDetailView, MenuItemCreateView,
-    MenuItemUpdateView, MenuItemDeleteView, MenuItemProductCreateView, MenuManagerListView, OrderCashierDetailView,
+    MenuItemUpdateView, MenuItemDeleteView, MenuItemProductCreateView, MenuManagerListView, OrderCashierDetailView
 )
 
 app_name = 'cart'
@@ -26,6 +26,7 @@ urlpatterns = [
     path('deleted/', views.DeletedOrderListView.as_view(), name='deleted_orders'),
     path('daily-sales/', views.DailySalesView.as_view(), name='daily_sales'),
     path('deleted/order/', views.DeletedOrderCashierListView.as_view(), name='deleted_order'),
+
 
 
 

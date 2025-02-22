@@ -2,6 +2,7 @@ from django.db import models
 from inventory.models import Product
 from django.utils.text import slugify
 from django.utils import timezone
+from inventory.models import CounterStock, Product
 
 class MenuCategory(models.Model):
     name = models.CharField(max_length=50, unique=True, null=False, blank=False)
@@ -18,6 +19,7 @@ class MenuCategory(models.Model):
 
 
 class MenuItem(models.Model):
+
     name = models.CharField(max_length=255)
     category = models.ForeignKey(MenuCategory, on_delete=models.CASCADE, related_name='menu_items')
     description = models.TextField(blank=True, null=True)
@@ -46,10 +48,28 @@ class MenuItem(models.Model):
 class MenuItemProduct(models.Model):
     menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE, related_name='menu_item_products')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='menu_item_products')
-    quantity = models.DecimalField(max_digits=10, decimal_places=2, help_text="Quantity of product used")
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, help_text="Quantity of product used per order")
 
-    def __str__(self):
+    def _str_(self):
         return f"{self.quantity} {self.product.unit} of {self.product.name} for {self.menu_item.name}"
+
+    def deduct_stock(self, order_quantity):
+        """Deducts stock from CounterStock when an order is placed."""
+        counter_stock = CounterStock.objects.filter(product=self.product).first()
+
+        if counter_stock:
+            required_stock = self.quantity * order_quantity
+
+            # Check if there's enough stock
+            if counter_stock.current_stock >= required_stock:
+                counter_stock.current_stock -= required_stock
+                counter_stock.save()
+            else:
+                # Handle insufficient stock case (optional: raise error or log message)
+                raise ValueError(f"Not enough stock for {self.product.name}. Only {counter_stock.current_stock} available.")
+        else:
+            # Handle case when there's no stock in the counter (optional: create counter stock entry)
+            raise ValueError(f"No stock entry for {self.product.name} in the counter.")
 
 
 class Order(models.Model):
@@ -70,17 +90,51 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id} - Table {self.table_number}"
 
-    def delete(self, using=None, keep_parents=False):
+    def save(self, *args, **kwargs):
         """
-        Soft delete the order by setting the `deleted_at` field instead of deleting it.
-        Only allows soft delete for orders that are in the 'pending' status.
+        When an order is marked as 'paid', create OrderItems and update stock.
         """
-        if self.status == 'pending':
-            self.deleted_at = timezone.now()
-            self.status = 'deleted'
-            self.save()
-        else:
-            super().delete(using=using, keep_parents=keep_parents)
+        if self.pk:  # Ensure this is an update, not a new order
+            previous_order = Order.objects.filter(pk=self.pk).first()
+            if previous_order and previous_order.status != "paid" and self.status == "paid":
+                # Order has just been marked as paid → Create OrderItem entries
+                self.create_order_items()
+                self.update_sold_stock()
+
+        super().save(*args, **kwargs)
+
+    def create_order_items(self):
+        """
+        Creates OrderItem records from session-based cart.
+        """
+        from django.contrib.sessions.models import Session
+        session = Session.objects.filter(expire_date__gte=timezone.now()).first()
+
+        if session:
+            cart = session.get_decoded().get("cart", [])  # Retrieve cart from session
+            for item in cart:
+                menu_item = MenuItem.objects.get(id=item["menu_item_id"])
+                OrderItem.objects.create(
+                    order=self,
+                    menu_item=menu_item,
+                    quantity=item["quantity"]
+                )
+
+            session.get_decoded()["cart"] = []  # Clear the cart after checkout
+            session.save()
+
+    def update_sold_stock(self):
+        """
+        Deduct sold items from counter stock when an order is paid.
+        """
+        for order_item in self.order_items.all():
+            product_name = order_item.menu_item.name  # Match CounterStock by name
+            counter_stock = CounterStock.objects.filter(product__name=product_name).first()
+
+
+            if counter_stock:
+                counter_stock.qty = max(counter_stock.qty - order_item.quantity, 0)
+                counter_stock.save()
 
 
 
@@ -88,6 +142,8 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
+
+
     menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE, related_name='order_items')
     quantity = models.PositiveIntegerField(default=1)
     special_requests = models.TextField(blank=True, null=True)
@@ -99,6 +155,20 @@ class OrderItem(models.Model):
     @property
     def total_price(self):
         return self.quantity * self.menu_item.price
+
+    def deduct_stock(self):
+        """Deduct stock from CounterStock when an order is placed."""
+        menu_products = MenuItemProduct.objects.filter(menu_item=self.menu_item)
+
+        for menu_product in menu_products:
+            counter_stock = CounterStock.objects.filter(product=menu_product.product).first()
+            if counter_stock:
+                required_quantity = menu_product.quantity * self.quantity
+                if counter_stock.current_stock >= required_quantity:
+                    counter_stock.current_stock -= required_quantity
+                    counter_stock.save()
+                else:
+                    raise ValueError(f"Not enough stock for {menu_product.product.name}")
 
 
 

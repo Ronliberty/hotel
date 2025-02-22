@@ -1,0 +1,33 @@
+{% extends 'dashboard/main.html' %}
+
+{% block content %}
+<h2>Stock Movement</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="product">Select Product:</label>
+    <select name="product_id">
+        {% for product in products %}
+            <option value="{{ product.id }}">{{ product.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" name="quantity" required>
+
+    <label for="source">Source:</label>
+    <select name="source">
+        <option value="store">Store</option>
+        <option value="counter">Counter</option>
+        <option value="kitchen">Kitchen</option>
+    </select>
+
+    <label for="destination">Destination:</label>
+    <select name="destination">
+        <option value="counter">Counter</option>
+        <option value="kitchen">Kitchen</option>
+    </select>
+
+    <button type="submit">Move Stock</button>
+</form>
+{% endblock %}

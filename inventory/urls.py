@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     MainCategoryListView, MainCategoryCreateView, MainCategoryUpdateView, MainCategoryDeleteView,ProductManagerListView,
-    SubCategoryListView, SubCategoryCreateView, SubCategoryUpdateView, SubCategoryDeleteView, ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView
+    SubCategoryListView, SubCategoryCreateView, SubCategoryUpdateView, SubCategoryDeleteView, ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView, StockMovementView, CounterStockListView, SalesInvoiceCreateView, SalesInvoiceListView, SendStockDataToKRA
 )
 from .import views
 
@@ -13,12 +13,17 @@ urlpatterns = [
     path('main-categories/add/', MainCategoryCreateView.as_view(), name='main_category_add'),
     path('main-categories/<int:pk>/edit/', MainCategoryUpdateView.as_view(), name='main_category_edit'),
     path('main-categories/<int:pk>/delete/', MainCategoryDeleteView.as_view(), name='main_category_delete'),
+    path('stock-movement/', StockMovementView.as_view(), name='stock-movement'),
+    path("stock-list/", CounterStockListView.as_view(), name="stock-list"),
+
+
 
 
     path('sub-categories/', SubCategoryListView.as_view(), name='sub_category_list'),
     path('sub-categories/add/', SubCategoryCreateView.as_view(), name='sub_category_add'),
     path('sub-categories/<int:pk>/edit/', SubCategoryUpdateView.as_view(), name='sub_category_edit'),
     path('sub-categories/<int:pk>/delete/', SubCategoryDeleteView.as_view(), name='sub_category_delete'),
+
 
 #manager
 
@@ -40,4 +45,12 @@ urlpatterns = [
     path('create/', views.TaxCategoryCreateView.as_view(), name='taxcategory-create'),
     path('<int:pk>/edit/', views.TaxCategoryUpdateView.as_view(), name='taxcategory-edit'),
     path('<int:pk>/delete/', views.TaxCategoryDeleteView.as_view(), name='taxcategory-delete'),
+
+
+    #kra
+    path('sales-invoice/create/', SalesInvoiceCreateView.as_view(), name='create-sales-invoice'),
+    # API endpoints
+    path('api/send-stock-to-kra/', SendStockDataToKRA.as_view(), name='send-stock-to-kra'),
+    path('api/sales-invoices/', SalesInvoiceListView.as_view(), name='sales-invoice-list'),
+
 ]

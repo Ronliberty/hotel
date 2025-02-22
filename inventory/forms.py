@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, TaxCategory
+from .models import Product, TaxCategory, SubCategory, SalesInvoice
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -35,4 +35,29 @@ class TaxCategoryForm(forms.ModelForm):
             'tax_category': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter tax category name'}),
             'tax_desc': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Enter description'}),
             'tax_percentage': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter tax percentage'}),
+        }
+
+
+
+class SubCategoryForm(forms.ModelForm):
+    class Meta:
+        model = SubCategory
+        fields = ['main_category', 'name', 'description']
+        widgets = {
+              # Normal select field
+            'name': forms.TextInput(attrs={'class': '', 'placeholder': 'Enter SubCategory Name'}),
+            'description': forms.Textarea(attrs={'class': '', 'rows': 3, 'placeholder': 'Enter Description'}),
+        }
+
+
+class SalesInvoiceForm(forms.ModelForm):
+    class Meta:
+        model = SalesInvoice
+        fields = [
+            'invoice_number', 'bought_at', 'product', 'qty_sold',
+            'sales_price', 'discount', 'tax_category', 'tax_amount',
+            'total_amount', 'currency', 'issued_by'
+        ]
+        widgets = {
+            'bought_at': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }

@@ -58,8 +58,16 @@ class TaxCategory(models.Model):
 
 
 class Product(models.Model):
+    CHOICES = [
+        ('store', 'Store'),
+        ('counter', 'Counter'),
+        ('kitchen', 'Kitchen'),
+        ]
     sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name="products")
     name = models.CharField(max_length=125, null=False, blank=False)
+    supplier = models.CharField(max_length=125, null=False, blank=False, default='anonymous')  # Manually entered
+    bought_at = models.DateTimeField(null=True, blank=True)  # Manually entered date
+    invoice_number = models.CharField(max_length=50, null=False, blank=False, default="INV-0001")
 
     description = models.TextField(blank=True)
     sales_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
@@ -84,8 +92,9 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        currency_display = self.currency if self.currency else "Unknown Currency"
-        return f"{self.name} - {currency_display} {self.price:,.2f}"
+        return self.name  # Return only the name to avoid issues in queries
+
+
 
 
 
@@ -110,3 +119,82 @@ class Product(models.Model):
         # if not self.slug:
         #     self.slug = slugify(self.name)
         # super().save(*args, **kwargs)
+
+
+class CounterStock(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="counter_stock")
+    qty = models.PositiveIntegerField(default=0, help_text="Stock at the counter")
+
+    moved_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.qty} {self.product.unit} at Counter"
+
+    def adjust_stock(self, quantity, movement_type='add'):
+        """
+        Adjust stock at the counter based on the movement type (add/remove).
+        :param quantity: Quantity to add or subtract from the counter stock.
+        :param movement_type: Type of movement ('add' or 'remove').
+        """
+        if movement_type == 'add':
+            self.qty += quantity
+        elif movement_type == 'remove':
+            if self.qty >= quantity:
+                self.qty -= quantity
+            else:
+                raise ValueError("Not enough stock to remove.")
+        self.save()
+
+
+class KitchenStock(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="kitchen_stock")
+    qty = models.DecimalField(max_digits=10, decimal_places=2, default=0, help_text="Stock in kitchen")
+    moved_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.qty} {self.product.unit} in Kitchen"
+
+
+
+class StockMovement(models.Model):
+    STORE_CHOICES = [
+        ("store", "Store"),
+        ("counter", "Counter"),
+        ("kitchen", "Kitchen"),
+    ]
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="stock_movements")
+    quantity = models.IntegerField()
+    source = models.CharField(max_length=10, choices=STORE_CHOICES)
+    destination = models.CharField(max_length=10, choices=STORE_CHOICES)
+    moved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.quantity} {self.product.name} moved from {self.source} to {self.destination} on {self.timestamp}"
+
+
+
+class SalesInvoice(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name="sales_invoices")
+    supplier = models.CharField(max_length=125, null=False, blank=False, default='anonymous')
+    bought_at = models.DateTimeField(null=True, blank=True)
+    invoice_number = models.CharField(max_length=50, unique=True, null=False, blank=False, default="INV-0001")
+    qty_sold = models.PositiveIntegerField(null=False, blank=False, help_text="Quantity sold")
+    sales_price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, help_text="Selling price per unit")
+    discount = models.DecimalField(max_digits=5, decimal_places=2, default=0, null=True, help_text="Discount percentage")
+    tax_category = models.ForeignKey('TaxCategory', on_delete=models.RESTRICT, related_name="sales_invoices")
+    tax_amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, help_text="Total tax applied")
+    currency = models.CharField(max_length=3, default="Ksh", choices=[("Ksh", "Kenyan Shilling")])
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, help_text="Final amount after tax and discount")
+    issued_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="issued_invoices")
+
+    def save(self, *args, **kwargs):
+        # Calculate the total amount dynamically before saving
+        discount_value = (self.sales_price * self.qty_sold) * (self.discount / 100)
+        taxable_amount = (self.sales_price * self.qty_sold) - discount_value
+        self.total_amount = taxable_amount + self.tax_amount  # Adding tax amount to final price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Invoice {self.invoice_number} - {self.product.name}"

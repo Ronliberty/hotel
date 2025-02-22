@@ -77,6 +77,7 @@ class PaymentDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         payment = self.object
         payment_order = payment.payment_orders.first() # Example: Get associated PaymentOrder
+        context['balance'] = payment.total_payment - payment.amount_paid
         if payment_order:
             context['payment_order'] = payment_order
         else:
@@ -102,32 +103,34 @@ class PaymentCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def form_valid(self, form):
-        order = form.order
+        order = form.instance.order  # Ensure correct order retrieval
 
-        # Ensure order is pending
-        if order.status != 'pending':
-            raise ValidationError("Only 'pending' orders can be completed with a payment.")
-
-        # Ensure no duplicate payments
-        if order.payments.exists():
-            raise ValidationError("This order already has a payment.")
+        # Ensure order is pending or partially paid
+        if order.status not in ['pending', 'partially_paid']:
+            raise ValidationError("Only 'pending' or 'partially_paid' orders can be completed with a payment.")
 
         # Assign user, order, and generate unique payment_id
         form.instance.user = self.request.user
-        form.instance.order = order
         form.instance.payment_id = str(uuid.uuid4())
 
         # Set timezone to Kenya
         kenya_tz = pytz.timezone('Africa/Nairobi')
         form.instance.payment_dt = timezone.now().astimezone(kenya_tz)
 
-        # Save the payment
+        # Save the payment instance but do not commit yet
         payment = form.save(commit=False)
-        payment.balance = payment.total_payment - payment.amount_paid  # Calculate balance
+
+        # Calculate the total paid amount
+        total_paid = order.payments.aggregate(total=models.Sum('amount_paid'))['total'] or 0
+        total_paid += payment.amount_paid
+
+        # Calculate the balance correctly (avoid negative values)
+        balance = max(order.total_payment - total_paid, 0)
+        payment.balance = balance  # Assign the corrected balance
         payment.save()
 
         # Update order status
-        if payment.balance == 0:
+        if balance == 0:
             order.status = 'paid'
         else:
             order.status = 'partially_paid'
@@ -143,21 +146,49 @@ class PaymentCreateView(LoginRequiredMixin, CreateView):
 
 
 
+
+
+
+# MPESA API Credentials
+
+
+# Function to get Mpesa Access Token
+def get_access_token():
+    url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
+    response = requests.get(url, auth=HTTPBasicAuth(MPESA_CONSUMER_KEY, MPESA_CONSUMER_SECRET))
+    data = response.json()
+    return data.get("access_token")
+
+# Register M-Pesa Confirmation URL
+def register_mpesa_urls():
+    access_token = get_access_token()
+    url = "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl"
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "ShortCode": MPESA_SHORTCODE,
+        "ResponseType": "Completed",
+        "ConfirmationURL": CONFIRMATION_URL,
+        "ValidationURL": VALIDATION_URL
+    }
+    response = requests.post(url, headers=headers, json=payload)
+    return response.json()
+
+# M-Pesa Payment Confirmation Endpoint
 @csrf_exempt
 def mpesa_confirmation(request):
-    """
-    Receive payment confirmation from Mpesa and record it in the system.
-    """
     if request.method == "POST":
         try:
-            data = json.loads(request.body.decode('utf-8'))
+            data = json.loads(request.body.decode("utf-8"))
 
             transaction_id = data.get("TransID")
             amount = float(data.get("TransAmount", 0))
             phone_number = data.get("MSISDN")
-            bill_ref = data.get("BillRefNumber")  # Ensure this correctly maps to an Order
+            bill_ref = data.get("BillRefNumber")  # Maps to Order ID
 
-            # Find order based on bill_ref (Ensure Order has a corresponding field)
+            # Ensure the order exists
             order = get_object_or_404(Order, id=bill_ref)
 
             # Prevent duplicate payments
@@ -165,35 +196,29 @@ def mpesa_confirmation(request):
                 return JsonResponse({"ResultCode": 1, "ResultDesc": "Duplicate transaction"})
 
             # Set timezone to Kenya
-            kenya_tz = pytz.timezone('Africa/Nairobi')
+            kenya_tz = pytz.timezone("Africa/Nairobi")
             payment_dt = timezone.now().astimezone(kenya_tz)
 
             # Calculate new balance
             new_balance = max(order.total_price - amount, 0)
 
-            # Create the payment record
-            payment = Payment.objects.create(
+            # Create a payment record
+            Payment.objects.create(
                 order=order,
-                payment_id=transaction_id,  # Use Mpesa transaction ID
+                payment_id=transaction_id,
                 total_payment=order.total_price,
                 amount_paid=amount,
                 balance=new_balance,
                 payment_type="MOBILE",
-                user=order.user if order.user else None,  # Ensure user exists
+                user=order.user if order.user else None,
                 payment_dt=payment_dt
             )
 
             # Update order status
-            if new_balance == 0:
-                order.status = 'paid'
-            else:
-                order.status = 'partially_paid'
+            order.status = "paid" if new_balance == 0 else "partially_paid"
             order.save()
 
-            return JsonResponse({
-                "ResultCode": 0,
-                "ResultDesc": "Payment processed successfully"
-            })
+            return JsonResponse({"ResultCode": 0, "ResultDesc": "Payment processed successfully"})
 
         except json.JSONDecodeError:
             return JsonResponse({"ResultCode": 1, "ResultDesc": "Invalid JSON format"})
@@ -201,5 +226,6 @@ def mpesa_confirmation(request):
             return JsonResponse({"ResultCode": 1, "ResultDesc": "Order not found"})
         except Exception as e:
             return JsonResponse({"ResultCode": 1, "ResultDesc": f"Error: {str(e)}"})
-    else:
-        return JsonResponse({"ResultCode": 1, "ResultDesc": "Invalid request method"})
+
+    return JsonResponse({"ResultCode": 1, "ResultDesc": "Invalid request method"})
+
